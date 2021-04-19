@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class GameModel {
 	private final Random random;
-	@Getter
+	@Setter @Getter
 	private Map map;
 	@Setter
 	private Hero hero;
@@ -20,11 +20,6 @@ public class GameModel {
 		this.random = new Random();
 	}
 
-	public void downloadMap() {
-		map = new Map(hero);
-		hero.setPosition(new Point(map.getSize() / 2 + 1, map.getSize() / 2 + 1));
-		map.downloadEnemies();
-	}
 
 	public void moveUp() {
 		move(hero.getPosition().getX(), hero.getPosition().getY() - 1);

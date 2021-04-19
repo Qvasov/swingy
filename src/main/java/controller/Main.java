@@ -1,6 +1,7 @@
 package controller;
 
 import model.GameModel;
+import model.GameModelFacade;
 import view.GameView;
 
 public class Main {
@@ -14,7 +15,7 @@ public class Main {
 
 		//Обработка фалгов
 
-		controller = new GameController(new GameModel(), new GameView());
+		controller = new GameController(new GameModelFacade(), new GameView());
 
 		controller.launchGame();
 	}

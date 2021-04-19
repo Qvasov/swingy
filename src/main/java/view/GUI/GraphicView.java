@@ -1,6 +1,5 @@
 package view.GUI;
 
-import com.sun.deploy.panel.JavaPanel;
 import controller.GameController;
 import model.EmptyIcon;
 import model.IconStorage;
@@ -24,7 +23,7 @@ public class GraphicView extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		int mapSize = controller.getModel().getMap().getSize();
+		int mapSize = controller.getModelFacade().getMap().getSize();
 		this.mapIcons = new JLabel[mapSize][mapSize];
 		for (int x = 0; x < mapSize; x++) {
 			for (int y = 0; y < mapSize; y++) {
@@ -74,7 +73,7 @@ public class GraphicView extends JFrame {
 	}
 
 	public void updateView() {
-		Map map = controller.getModel().getMap();
+		Map map = controller.getModelFacade().getMap();
 		Icon icon;
 
 		for (int x = 0; x < map.getSize(); x++) {

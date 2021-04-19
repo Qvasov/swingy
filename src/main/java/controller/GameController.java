@@ -2,7 +2,7 @@ package controller;
 
 import lombok.Getter;
 import model.GameModel;
-import model.characters.enemies.Enemy;
+import model.GameModelFacade;
 import view.GUI.HeroPickView;
 import view.GameView;
 
@@ -11,14 +11,13 @@ import java.awt.event.KeyListener;
 
 public class GameController implements KeyListener {
 	@Getter
-	private final GameModel model;
+	private final GameModelFacade modelFacade;
 	private final GameView view;
 
-	public GameController(GameModel model, GameView view) {
-		this.model = model;
+	public GameController(GameModelFacade modelFacade, GameView view) {
+		this.modelFacade = modelFacade;
 		this.view = view;
 		view.setController(this);
-		model.setController(this);
 	}
 
 	public void launchGame() {
@@ -26,16 +25,16 @@ public class GameController implements KeyListener {
 	}
 
 	public void startGame() {
-		model.downloadMap();
+		modelFacade.downloadMap();
 		view.updateView();
 	}
 
 	public void fight() {
-		model.fight();
+		modelFacade.fight();
 	}
 
 	public void run() {
-		model.run();
+		modelFacade.run();
 	}
 
 	@Override
@@ -55,16 +54,16 @@ public class GameController implements KeyListener {
 				System.exit(0);
 				break;
 			case KeyEvent.VK_UP:
-				model.moveUp();
+				modelFacade.moveUp();
 				break;
 			case KeyEvent.VK_RIGHT:
-				model.moveRight();
+				modelFacade.moveRight();
 				break;
 			case KeyEvent.VK_DOWN:
-				model.moveDown();
+				modelFacade.moveDown();
 				break;
 			case KeyEvent.VK_LEFT:
-				model.moveLeft();
+				modelFacade.moveLeft();
 				break;
 		}
 		view.updateView();
@@ -72,7 +71,7 @@ public class GameController implements KeyListener {
 	}
 
 	public void checkBattle() {
-		if (model.checkBattle()) {
+		if (modelFacade.checkBattle()) {
 			view.battleView();
 		}
 	}

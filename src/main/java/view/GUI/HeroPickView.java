@@ -27,10 +27,11 @@ public class HeroPickView extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		//TODO переделать выбор героя из базы данных через DB manager
 		createHero.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.getModel().setHero(HeroBuilder.getInstance().createHero());
+				controller.getModelFacade().setHero(HeroBuilder.getInstance().createHero());
 			}
 		});
 
