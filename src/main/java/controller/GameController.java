@@ -30,18 +30,12 @@ public class GameController implements KeyListener {
 		view.updateView();
 	}
 
-	public void battle(Enemy enemy) {
-		view.battleView();
-	}
-
 	public void fight() {
-		//эмуляция боя
+		model.fight();
 	}
 
 	public void run() {
-		model.run() {
-		//Тут закончил
-		}
+		model.run();
 	}
 
 	@Override
@@ -73,6 +67,13 @@ public class GameController implements KeyListener {
 				model.moveLeft();
 				break;
 		}
-//		view.updateView();
+		view.updateView();
+		checkBattle();
+	}
+
+	public void checkBattle() {
+		if (model.checkBattle()) {
+			view.battleView();
+		}
 	}
 }
