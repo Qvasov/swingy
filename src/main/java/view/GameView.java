@@ -6,7 +6,7 @@ import lombok.Setter;
 import view.GUI.BattleView;
 import view.GUI.GraphicView;
 
-public class GameView {
+public class GameView implements View {
 	@Setter
 	private GameController controller;
 	@Getter

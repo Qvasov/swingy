@@ -15,7 +15,7 @@ public class GameModelFacade {
 		this.views = new LinkedList<>();
 	}
 
-	public void notify() {}
+	public void notifyAllView() {}
 
 	public void addView(View view) {
 		views.add(view);
@@ -30,9 +30,22 @@ public class GameModelFacade {
 	}
 
 	public void downloadMap() {
-		model.map = new Map(hero);
-		hero.setPosition(new Point(map.getSize() / 2 + 1, map.getSize() / 2 + 1));
-		map.downloadEnemies();
+		model.downloadMap();
 	}
 
+	public void moveUp() {
+		model.move(0, -1);
+	}
+
+	public void moveRight() {
+		model.move(1, 0);
+	}
+
+	public void moveDown() {
+		model.move(0, 1);
+	}
+
+	public void moveLeft() {
+		model.move(-1, 0);
+	}
 }

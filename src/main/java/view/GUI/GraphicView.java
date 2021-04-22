@@ -4,6 +4,7 @@ import controller.GameController;
 import model.EmptyIcon;
 import model.IconStorage;
 import model.Map;
+import view.View;
 
 import javax.swing.*;
 import java.awt.*;
