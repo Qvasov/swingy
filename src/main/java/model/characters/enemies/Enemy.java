@@ -14,5 +14,6 @@ public class Enemy extends Unit {
 	private Item item;
 
 	protected Enemy() {
+		super();
 	}
 }

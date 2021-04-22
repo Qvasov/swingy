@@ -43,7 +43,8 @@ public class Map {
 				column = units[x];
 				y = generateCoordinate();
 				if (column.get(y) == null) {
-					enemy.setPosition(new Point(x, y));
+					enemy.getPosition().setX(x);
+					enemy.getPosition().setY(y);
 					column.put(y, enemy);
 					break;
 				}

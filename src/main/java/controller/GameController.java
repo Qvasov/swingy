@@ -2,7 +2,6 @@ package controller;
 
 import lombok.Getter;
 import model.GameModel;
-import model.characters.enemies.Enemy;
 import view.GUI.HeroPickView;
 import view.GameView;
 
@@ -18,7 +17,6 @@ public class GameController implements KeyListener {
 		this.model = model;
 		this.view = view;
 		view.setController(this);
-		model.setController(this);
 	}
 
 	public void launchGame() {
@@ -68,12 +66,5 @@ public class GameController implements KeyListener {
 				break;
 		}
 		view.updateView();
-		checkBattle();
-	}
-
-	public void checkBattle() {
-		if (model.checkBattle()) {
-			view.battleView();
-		}
 	}
 }

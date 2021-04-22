@@ -21,58 +21,54 @@ public class GameModel {
 	}
 
 	public void downloadMap() {
-		map = new Map(hero);
-		hero.setPosition(new Point(map.getSize() / 2 + 1, map.getSize() / 2 + 1));
-		map.downloadEnemies();
+		this.map = new Map(hero);
+		this.hero.getPosition().setX(map.getSize() / 2 + 1);
+		this.hero.getPosition().setY(map.getSize() / 2 + 1);
+		this.map.downloadEnemies();
 	}
 
 	public void moveUp() {
-		move(hero.getPosition().getX(), hero.getPosition().getY() - 1);
+		move(0, -1);
 	}
 
 	public void moveRight() {
-		move(hero.getPosition().getX() + 1, hero.getPosition().getY());
+		move(1, 0);
 	}
 
 	public void moveDown() {
-		move(hero.getPosition().getX(), hero.getPosition().getY() + 1);
+		move(0, 1);
 	}
 
 	public void moveLeft() {
-		move(hero.getPosition().getX() - 1, hero.getPosition().getY());
+		move(-1, 0);
 	}
 
 	private void move(int destX, int destY) {
 		int srcX = hero.getPosition().getX() - 1;
 		int srcY = hero.getPosition().getY() - 1;
+		destX += srcX;
+		destY += srcY;
 		//проверка на границу карты
 		if (destY < 1 || destY > map.getSize() || destX < 1 || destX > map.getSize()) {
 			//вывод сообщения, что это граница карты в textArea
 		} else {
-			unit = map.getUnits()[destX - 1].get(destY - 1);
+			unit = map.getUnits()[destX].get(destY);
 			map.getUnits()[srcX].remove(srcY);
-//		    map.getUnits()[destX - 1].remove(destY - 1);
-			map.getUnits()[destX - 1].put(destY - 1, hero);
-
-
-
-
-				hero.getPosition().setX(destX);
-				hero.getPosition().setY(destY);
+		    map.getUnits()[destX].remove(destY - 1);
+			map.getUnits()[destX].put(destY, hero);
+			hero.getPosition().setX(destX);
+			hero.getPosition().setY(destY);
 		}
 	}
 
-	public boolean checkBattle() {
-		if (unit != null &&  unit instanceof Enemy) {
-			return true;
-		}
-		return false;
+	public boolean isBattle() {
+		return unit != null && unit instanceof Enemy;
 	}
 
 	public void run() {
 		if (random.nextInt(2) == 1) {
-			map.getUnits()[hero.getPosition().getX() - 1].put(hero.getPosition().getY() - 1, hero);
-			map.getUnits()[destX - 1].put(destY - 1, unit);
+			map.getUnits()[hero.getPosition().getOldX() - 1].put(hero.getPosition().getOldY() - 1, hero);
+			map.getUnits()[unit.getPosition().getX() - 1].put(unit.getPosition().getY() - 1, unit);
 		} else {
 			fight();
 		}
@@ -81,6 +77,7 @@ public class GameModel {
 	public void fight() {
 		//Эмуляция боя с unit
 		// итог боя герой переходит на клетку противника
+		unit = null;
 	}
 
 	public void downloadCharacters() {

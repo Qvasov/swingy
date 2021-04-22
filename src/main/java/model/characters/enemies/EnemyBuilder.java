@@ -10,7 +10,6 @@ public class EnemyBuilder {
 		return builder;
 	}
 
-
 	public Enemy createEnemy() {
 		return new Enemy();
 	}

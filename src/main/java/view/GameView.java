@@ -10,25 +10,23 @@ public class GameView {
 	@Setter
 	private GameController controller;
 	@Getter
-	private GraphicView graphicView;
-//	private CUI cui;
-	private BattleView battleView;
+//	private GraphicView graphicView;
+//	private ConsoleView consoleView;
+	private View view;
 
 	public GameView() {}
 
 	public void updateView() {
-		if (graphicView == null) {
-			this.graphicView = new GraphicView(controller);
+		if (this.view == null) {
+			this.view = new GraphicView(controller);
 		}
-		graphicView.setVisible(true);
 
-		graphicView.updateView();
-	}
-
-	public void battleView() {
-		if (battleView == null) {
-			this.battleView = new BattleView(controller);
+		if (controller.getModel().isBattle()) {
+			if (view instanceof GraphicView) {
+				new BattleView(controller);
+			}
+		} else {
+			view.updateView();
 		}
-		battleView.setVisible(true);
 	}
 }

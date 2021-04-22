@@ -1,15 +1,15 @@
 package view.GUI;
 
-import com.sun.deploy.panel.JavaPanel;
 import controller.GameController;
 import model.EmptyIcon;
 import model.IconStorage;
 import model.Map;
+import view.View;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GraphicView extends JFrame {
+public class GraphicView extends JFrame implements View {
 	private GameController controller;
 	private JLabel[][] mapIcons;
 
@@ -88,5 +88,6 @@ public class GraphicView extends JFrame {
 			}
 		}
 		pack();
+		setVisible(true);
 	}
 }
