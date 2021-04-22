@@ -22,8 +22,8 @@ public class GameModel {
 
 	public void downloadMap() {
 		this.map = new Map(hero);
-		this.hero.getPosition().setX(map.getSize() / 2 + 1);
-		this.hero.getPosition().setY(map.getSize() / 2 + 1);
+		this.hero.getPosition().setX(map.getSize() / 2);
+		this.hero.getPosition().setY(map.getSize() / 2);
 		this.map.downloadEnemies();
 	}
 
@@ -44,18 +44,16 @@ public class GameModel {
 	}
 
 	private void move(int destX, int destY) {
-		int srcX = hero.getPosition().getX() - 1;
-		int srcY = hero.getPosition().getY() - 1;
+		int srcX = hero.getPosition().getX();
+		int srcY = hero.getPosition().getY();
 		destX += srcX;
 		destY += srcY;
 		//проверка на границу карты
-		if (destY < 1 || destY > map.getSize() || destX < 1 || destX > map.getSize()) {
+		if (destY < 0 || destY > map.getSize() - 1 || destX < 0 || destX > map.getSize() - 1) {
 			//вывод сообщения, что это граница карты в textArea
 		} else {
-			unit = map.getUnits()[destX].get(destY);
+			unit = map.getUnits()[destX].put(destY, hero);
 			map.getUnits()[srcX].remove(srcY);
-		    map.getUnits()[destX].remove(destY - 1);
-			map.getUnits()[destX].put(destY, hero);
 			hero.getPosition().setX(destX);
 			hero.getPosition().setY(destY);
 		}
@@ -66,9 +64,12 @@ public class GameModel {
 	}
 
 	public void run() {
-		if (random.nextInt(2) == 1) {
-			map.getUnits()[hero.getPosition().getOldX() - 1].put(hero.getPosition().getOldY() - 1, hero);
-			map.getUnits()[unit.getPosition().getX() - 1].put(unit.getPosition().getY() - 1, unit);
+		if (random.nextInt(2) == 0) {
+			hero.getPosition().setPrevX();
+			hero.getPosition().setPrevY();
+			map.getUnits()[hero.getPosition().getX()].put(hero.getPosition().getY(), hero);
+			map.getUnits()[unit.getPosition().getX()].put(unit.getPosition().getY(), unit);
+			unit = null;
 		} else {
 			fight();
 		}

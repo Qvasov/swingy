@@ -21,12 +21,11 @@ public class GameView {
 			this.view = new GraphicView(controller);
 		}
 
+		view.updateView();
 		if (controller.getModel().isBattle()) {
 			if (view instanceof GraphicView) {
 				new BattleView(controller);
 			}
-		} else {
-			view.updateView();
 		}
 	}
 }

@@ -30,10 +30,12 @@ public class GameController implements KeyListener {
 
 	public void fight() {
 		model.fight();
+		view.updateView();
 	}
 
 	public void run() {
 		model.run();
+		view.updateView();
 	}
 
 	@Override

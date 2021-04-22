@@ -55,7 +55,7 @@ public class Map {
 	private int generateCoordinate() {
 		int i = random.nextInt(size);
 
-		while (i == (size / 2) + 1) {
+		while (i == (size / 2)) {
 			i = random.nextInt(size);
 		}
 

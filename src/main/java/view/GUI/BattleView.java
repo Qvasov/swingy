@@ -18,6 +18,7 @@ public class BattleView extends JFrame {
 	}
 
 	private void initUI() {
+		//TODO сделать блокирование основного окна
 		setTitle("Battle");
 		setResizable(false);
 		setLocationRelativeTo(null);
