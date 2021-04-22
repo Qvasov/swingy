@@ -9,7 +9,7 @@ import view.View;
 import javax.swing.*;
 import java.awt.*;
 
-public class GraphicView extends JFrame {
+public class GraphicView extends JFrame implements View {
 	private GameController controller;
 	private JLabel[][] mapIcons;
 
@@ -24,7 +24,7 @@ public class GraphicView extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		int mapSize = controller.getModelFacade().getMap().getSize();
+		int mapSize = controller.getModel().getMap().getSize();
 		this.mapIcons = new JLabel[mapSize][mapSize];
 		for (int x = 0; x < mapSize; x++) {
 			for (int y = 0; y < mapSize; y++) {
@@ -74,7 +74,7 @@ public class GraphicView extends JFrame {
 	}
 
 	public void updateView() {
-		Map map = controller.getModelFacade().getMap();
+		Map map = controller.getModel().getMap();
 		Icon icon;
 
 		for (int x = 0; x < map.getSize(); x++) {
@@ -88,5 +88,6 @@ public class GraphicView extends JFrame {
 			}
 		}
 		pack();
+		setVisible(true);
 	}
 }

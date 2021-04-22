@@ -3,13 +3,20 @@ package model;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter @Getter
+@Getter
 public class Point {
 	private int x;
 	private int y;
+	private int oldX;
+	private int oldY;
 
-	public Point(int x, int y) {
+	public void setX(int x) {
+		this.oldX = this.x;
 		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.oldY = this.y;
 		this.y = y;
 	}
 }

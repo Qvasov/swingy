@@ -34,7 +34,7 @@ public class BattleView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.fight();
-				setVisible(false);
+				dispose();
 			}
 		});
 
@@ -42,8 +42,11 @@ public class BattleView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.run();
-				setVisible(false);
+				dispose();
 			}
 		});
+
+		pack();
+		setVisible(true);
 	}
 }

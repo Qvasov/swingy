@@ -2,6 +2,7 @@ package model.characters.heroes;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.Point;
 import model.Unit;
 import model.artifacts.abstarct.Armor;
 import model.artifacts.abstarct.Helm;
@@ -25,4 +26,7 @@ public class Hero extends Unit {
 	@Setter
 	private Weapon weapon;
 
+	public Hero() {
+		super();
+	}
 }

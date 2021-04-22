@@ -31,7 +31,7 @@ public class HeroPickView extends JFrame {
 		createHero.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.getModelFacade().setHero(HeroBuilder.getInstance().createHero());
+				controller.getModel().setHero(HeroBuilder.getInstance().createHero());
 			}
 		});
 
