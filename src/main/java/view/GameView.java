@@ -22,6 +22,7 @@ public class GameView {
 		}
 
 		view.updateView();
+		//TODO переделать на диалоговое окно JDialog
 		if (controller.getModel().isBattle()) {
 			if (view instanceof GraphicView) {
 				new BattleView(controller);

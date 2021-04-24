@@ -19,7 +19,7 @@ public class GraphicView extends JFrame implements View {
 	}
 
 	private void initUI() {
-		setTitle("Game");
+		setTitle("Swingy");
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -36,7 +36,6 @@ public class GraphicView extends JFrame implements View {
 //		JPanel panel = new JavaPanel();
 //		JScrollPane scrollPane = new JScrollPane(pane);
 //		add(scrollPane);
-		addKeyListener(controller);
 
 		GroupLayout layout = new GroupLayout(pane);
 		pane.setLayout(layout);
@@ -70,6 +69,7 @@ public class GraphicView extends JFrame implements View {
 		}
 		layout.setVerticalGroup(pg);
 
+		addKeyListener(controller);
 		pack();
 	}
 

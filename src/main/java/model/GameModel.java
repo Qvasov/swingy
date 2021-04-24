@@ -76,13 +76,10 @@ public class GameModel {
 	}
 
 	public void fight() {
-		//Эмуляция боя с unit
-		// итог боя герой переходит на клетку противника
+		// Эмуляция боя с unit
+		// Пре
+		// итог боя герой
+		// переходит на клетку противника
 		unit = null;
 	}
-
-	public void downloadCharacters() {
-		HeroStorage.getInstance().download();
-	}
-
 }

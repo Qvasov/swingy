@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BattleView extends JFrame {
+public class BattleView extends JDialog {
 	private GameController controller;
 	private JButton fight = new JButton("Fight");
 	private JButton run = new JButton("Run");
@@ -23,6 +23,7 @@ public class BattleView extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setSize(300, 300);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		Container pane = getContentPane();
 		GroupLayout gl = new GroupLayout(pane);

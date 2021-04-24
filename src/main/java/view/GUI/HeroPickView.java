@@ -14,6 +14,7 @@ public class HeroPickView extends JFrame {
 	private JButton loadHero = new JButton("Load Hero");
 	private JButton startGame = new JButton("Start");
 	private JTextField heroName = new JTextField("Name");
+	private JComboBox comboBox = new JComboBox(); //Компобокс выбора героя
 
 	public HeroPickView(GameController controller) {
 		this.controller = controller;
@@ -22,7 +23,7 @@ public class HeroPickView extends JFrame {
 
 	private void initGUI() {
 		setTitle("Hero pick");
-		setSize(300, 300);
+//		setSize(300, 300);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -53,5 +54,7 @@ public class HeroPickView extends JFrame {
 		gl.setVerticalGroup(gl.createParallelGroup()
 				.addComponent(createHero)
 				.addComponent(startGame));
+
+		pack();
 	}
 }
