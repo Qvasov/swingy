@@ -7,12 +7,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BattleView extends JDialog {
+public class AttackView extends JDialog {
 	private GameController controller;
 	private JButton fight = new JButton("Fight");
 	private JButton run = new JButton("Run");
 
-	public BattleView(GameController controller) {
+	public AttackView(GameController controller) {
 		this.controller = controller;
 		initUI();
 	}
@@ -21,16 +21,29 @@ public class BattleView extends JDialog {
 		//TODO сделать блокирование основного окна
 		setTitle("Battle");
 		setResizable(false);
-		setLocationRelativeTo(null);
 		setSize(300, 300);
+		setLocationRelativeTo(null);
+		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		Container pane = getContentPane();
 		GroupLayout gl = new GroupLayout(pane);
 		pane.setLayout(gl);
 
-		gl.setHorizontalGroup(gl.createSequentialGroup().addComponent(fight).addComponent(run));
-		gl.setVerticalGroup(gl.createParallelGroup().addComponent(fight).addComponent(run));
+		gl.setAutoCreateGaps(true);
+		gl.setAutoCreateContainerGaps(true);
+		gl.setHorizontalGroup(gl.createParallelGroup()
+				.addGroup(gl.createSequentialGroup()
+						.addComponent(fight)
+						.addComponent(run)
+				)
+		);
+		gl.setVerticalGroup(gl.createSequentialGroup()
+				.addGroup(gl.createParallelGroup()
+						.addComponent(fight)
+						.addComponent(run)
+				)
+		);
 
 		fight.addActionListener(new ActionListener() {
 			@Override

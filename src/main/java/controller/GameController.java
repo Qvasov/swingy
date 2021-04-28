@@ -34,7 +34,15 @@ public class GameController implements KeyListener {
 	}
 
 	public void run() {
-		model.run();
+		if (model.run()) {
+			view.updateView();
+		} else {
+			fight();
+		}
+	}
+
+	public void ok() {
+		model.ok();
 		view.updateView();
 	}
 

@@ -1,13 +1,15 @@
 package model;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 public class Point {
-	@Getter
 	private int x;
-	@Getter
 	private int y;
+	@Setter
 	private int prevX;
+	@Setter
 	private int prevY;
 
 	public void setX(int x) {
@@ -23,6 +25,7 @@ public class Point {
 	public void setPrevX() {
 		this.x = this.prevX;
 	}
+
 	public void setPrevY() {
 		this.y = prevY;
 	}

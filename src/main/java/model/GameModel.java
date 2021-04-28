@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import model.characters.enemies.Enemy;
 import model.characters.heroes.Hero;
-import model.characters.heroes.HeroStorage;
 
 import java.util.Random;
 
@@ -13,11 +12,18 @@ public class GameModel {
 	@Getter
 	private Map map;
 	@Setter
+	@Getter
 	private Hero hero;
-	private Unit unit;
+	private Enemy enemy;
+	@Getter
+	private String battleLog;
+	@Getter
+	private State state;
+	private boolean gameOver;
 
 	public GameModel() {
 		this.random = new Random();
+		this.state = State.PICK_HERO;
 	}
 
 	public void downloadMap() {
@@ -25,6 +31,7 @@ public class GameModel {
 		this.hero.getPosition().setX(map.getSize() / 2);
 		this.hero.getPosition().setY(map.getSize() / 2);
 		this.map.downloadEnemies();
+		this.state = State.MOVEMENT;
 	}
 
 	public void moveUp() {
@@ -52,34 +59,52 @@ public class GameModel {
 		if (destY < 0 || destY > map.getSize() - 1 || destX < 0 || destX > map.getSize() - 1) {
 			//вывод сообщения, что это граница карты в textArea
 		} else {
-			unit = map.getUnits()[destX].put(destY, hero);
-			map.getUnits()[srcX].remove(srcY);
+			enemy = (Enemy) map.getUnits()[destX].put(destY, map.getUnits()[srcX].remove(srcY));
 			hero.getPosition().setX(destX);
 			hero.getPosition().setY(destY);
+			state = (enemy != null) ? State.ATTACK : State.MOVEMENT;
 		}
 	}
 
-	public boolean isBattle() {
-		return unit != null && unit instanceof Enemy;
-	}
-
-	public void run() {
+	public boolean run() {
 		if (random.nextInt(2) == 0) {
-			hero.getPosition().setPrevX();
-			hero.getPosition().setPrevY();
+			hero.getPosition().setX(hero.getPosition().getPrevX());
+			hero.getPosition().setY(hero.getPosition().getPrevY());
 			map.getUnits()[hero.getPosition().getX()].put(hero.getPosition().getY(), hero);
-			map.getUnits()[unit.getPosition().getX()].put(unit.getPosition().getY(), unit);
-			unit = null;
-		} else {
-			fight();
+			map.getUnits()[enemy.getPosition().getX()].put(enemy.getPosition().getY(), enemy);
+			enemy = null;
+			state = State.MOVEMENT;
+			return true;
 		}
+		return false;
 	}
 
 	public void fight() {
-		// Эмуляция боя с unit
-		// Пре
-		// итог боя герой
-		// переходит на клетку противника
-		unit = null;
+		while (true) {
+			attack(this.hero, this.enemy);
+			if (enemy.isDead()) {
+				battleLog += String.format("%s has won the fight!\n", this.hero.getName());
+				hero.receiveExp(1000);
+				hero.setHp(100);
+				enemy = null;
+				state = State.FIGHT_LOG;
+				return;
+			}
+			attack(this.enemy, this.hero);
+			if (hero.isDead()) {
+				battleLog += String.format("%s has died!\n It's Game Over", this.hero.getName());
+				state = State.GAME_OVER;
+				return;
+			}
+		}
+	}
+
+	private void attack(Unit attacker, Unit defender) {
+		int damage = defender.receiveDamage(attacker.dealDamage());
+		battleLog += String.format("%s deals %d damage to %s\n", attacker.getName(), damage, defender.getName());
+	}
+
+	public void ok() {
+		state = State.MOVEMENT;
 	}
 }

@@ -3,7 +3,7 @@ package view;
 import controller.GameController;
 import lombok.Getter;
 import lombok.Setter;
-import view.GUI.BattleView;
+import model.State;
 import view.GUI.GraphicView;
 
 public class GameView {
@@ -14,19 +14,14 @@ public class GameView {
 //	private ConsoleView consoleView;
 	private View view;
 
-	public GameView() {}
+	public GameView() {
+	}
 
 	public void updateView() {
 		if (this.view == null) {
 			this.view = new GraphicView(controller);
-		}
-
-		view.updateView();
-		//TODO переделать на диалоговое окно JDialog
-		if (controller.getModel().isBattle()) {
-			if (view instanceof GraphicView) {
-				new BattleView(controller);
-			}
+		} else {
+			view.updateView();
 		}
 	}
 }
