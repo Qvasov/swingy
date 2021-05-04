@@ -10,5 +10,4 @@ public abstract class Storage<T> {
 		this.data = new LinkedList<>();
 	}
 
-	public abstract void download();
 }

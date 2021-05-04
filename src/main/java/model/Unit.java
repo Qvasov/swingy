@@ -11,11 +11,17 @@ public abstract class Unit {
 	private String name;
 	private int attack;
 	private int defence;
-	@Setter
 	private int hp;
+	private Icon icon;
 
-	public Unit() {
+	//TODO воткнуть NOT NULL
+	public Unit(String name, int attack, int defence, int hp) {
 		this.position = new Point();
+		this.name = name;
+		this.attack = attack;
+		this.defence = defence;
+		this.hp = hp;
+		this.icon = IconStorage.downloadImage(this.getClass().getSimpleName());
 	}
 
 	public int dealDamage() {
@@ -30,5 +36,11 @@ public abstract class Unit {
 
 	public boolean isDead() {
 		return hp <= 0;
+	}
+
+	public void increaseStats (int addAttack, int addDefence, int addHp) {
+		this.attack += addAttack;
+		this.defence += addDefence;
+		this.hp += addHp;
 	}
 }

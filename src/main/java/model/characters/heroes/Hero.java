@@ -7,15 +7,13 @@ import model.artifacts.abstarct.Armor;
 import model.artifacts.abstarct.Helm;
 import model.artifacts.abstarct.Weapon;
 
-
-public class Hero extends Unit {
+public abstract class Hero extends Unit {
 	@Getter
-	int level;
-	@Setter
+	protected int level;
 	@Getter
-	int exp;
+	private int exp;
 	@Getter
-	int expToNextLvl;
+	private int expToNextLvl;
 
 	@Setter
 	private Helm helm;
@@ -24,8 +22,8 @@ public class Hero extends Unit {
 	@Setter
 	private Weapon weapon;
 
-	public Hero() {
-		super();
+	public Hero(String name, int attack, int defence, int hp) {
+		super(name, attack, defence, hp);
 		setExpToNextLvl();
 	}
 
@@ -38,25 +36,25 @@ public class Hero extends Unit {
 		this.exp += exp;
 		if (this.exp >= this.expToNextLvl) {
 			this.exp -= this.expToNextLvl;
-			this.level += 1;
+			levelUp();
 			setExpToNextLvl();
 		}
 	}
 
 	@Override
 	public int getHp() {
-		return super.getHp() + helm.getHp();
+		return super.getHp() + ((helm != null) ? helm.getHp() : 0);
 	}
 
 	@Override
 	public int dealDamage() {
-		return getAttack() + weapon.getAttack();
+		return getAttack() + ((weapon != null) ? weapon.getAttack() : 0);
 	}
 
 	@Override
 	public int receiveDamage(int damage) {
-		damage -= getDefence();
-		setHp(getHp() - damage);
-		return damage;
+		return super.receiveDamage(damage - ((armor != null) ? armor.getDefence() : 0));
 	}
+
+	public abstract void levelUp();
 }

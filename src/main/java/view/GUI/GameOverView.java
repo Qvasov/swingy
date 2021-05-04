@@ -7,13 +7,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FightResultView extends JDialog {
+public class GameOverView extends JDialog {
 	private GameController controller;
 	private JButton ok = new JButton("OK");
-	private JTextArea log = new JTextArea();
-	private JScrollPane scrollPane = new JScrollPane(log);
+	private JLabel message = new JLabel("Game Over");
 
-	public FightResultView(GameController controller) {
+	public GameOverView(GameController controller) {
 		this.controller = controller;
 		initUI();
 	}
@@ -35,7 +34,7 @@ public class FightResultView extends JDialog {
 		gl.setAutoCreateContainerGaps(true);
 		gl.setHorizontalGroup(gl.createParallelGroup()
 				.addGroup(gl.createSequentialGroup()
-						.addComponent(scrollPane)
+						.addComponent(message)
 				)
 				.addGroup(gl.createSequentialGroup()
 						.addComponent(ok)
@@ -43,20 +42,17 @@ public class FightResultView extends JDialog {
 		);
 		gl.setVerticalGroup(gl.createSequentialGroup()
 				.addGroup(gl.createParallelGroup()
-						.addComponent(scrollPane)
+						.addComponent(message)
 				)
 				.addGroup(gl.createParallelGroup()
 						.addComponent(ok)
 				)
 		);
 
-		log.setEditable(false);
-		log.setText(controller.getModel().getBattleLog());
-
 		ok.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.ok();
+				//TODO доделать гейм овер
 				dispose();
 			}
 		});

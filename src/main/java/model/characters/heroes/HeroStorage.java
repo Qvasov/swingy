@@ -1,22 +1,25 @@
 package model.characters.heroes;
 
-import model.Storage;
+import lombok.Getter;
 
-public class HeroStorage extends Storage<Hero> {
+import java.util.HashMap;
+import java.util.Map;
+
+public class HeroStorage {
 	private static final HeroStorage storage = new HeroStorage();
+	@Getter
+	private Map<String, Class<? extends Hero>> heroClasses = new HashMap<>();
 
 	private HeroStorage() {
-		super();
+		download();
 	}
 
-	public static HeroStorage getInstance()
-	{
+	public static HeroStorage getInstance() {
 		return storage;
 	}
 
-	@Override
 	public void download() {
-		data.add(new Warrior());
-		data.add(new Archer());
+//		heroClasses.put(Warrior.class.getSimpleName(), Warrior.getDefaultStats());
+//		heroClasses.put(Rogue.class.getSimpleName(), Rogue.getDefaultStats());
 	}
 }

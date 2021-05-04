@@ -2,6 +2,7 @@ package view.GUI;
 
 import controller.GameController;
 import model.*;
+import model.characters.Empty;
 import model.characters.heroes.Hero;
 import view.View;
 
@@ -53,15 +54,12 @@ public class GraphicView extends JFrame implements View {
 		Map map = controller.getModel().getMap();
 		Icon icon;
 
-		icon = IconStorage.getInstance().get(hero.getClass());
-		mapIcons[hero.getPosition().getX()][hero.getPosition().getY()].setIcon(icon);
+		mapIcons[hero.getPosition().getX()][hero.getPosition().getY()].setIcon(hero.getIcon());
 		if (map.getUnits()[hero.getPosition().getPrevX()] == null ||
 				map.getUnits()[hero.getPosition().getPrevX()].get(hero.getPosition().getPrevY()) == null) {
-			icon = IconStorage.getInstance().get(EmptyIcon.class);
+			icon = IconStorage.downloadImage(Empty.class.getSimpleName());
 		} else {
-			icon = IconStorage.getInstance().get(
-					map.getUnits()[hero.getPosition().getPrevX()].get(hero.getPosition().getPrevY()).getClass()
-			);
+			icon = map.getUnits()[hero.getPosition().getPrevX()].get(hero.getPosition().getPrevY()).getIcon();
 		}
 		mapIcons[hero.getPosition().getPrevX()][hero.getPosition().getPrevY()].setIcon(icon);
 
@@ -72,6 +70,8 @@ public class GraphicView extends JFrame implements View {
 			new AttackView(controller);
 		} else if (controller.getModel().getState() == State.FIGHT_LOG) {
 			new FightResultView(controller);
+		} else if (controller.getModel().getState() == State.GAME_OVER) {
+			new GameOverView(controller);
 		}
 	}
 
@@ -184,9 +184,9 @@ public class GraphicView extends JFrame implements View {
 		for (int x = 0; x < map.getSize(); x++) {
 			for (int y = 0; y < map.getSize(); y++) {
 				if (map.getUnits()[x] == null || map.getUnits()[x].get(y) == null) {
-					icon = IconStorage.getInstance().get(EmptyIcon.class);
+					icon = IconStorage.downloadImage(Empty.class.getSimpleName());
 				} else {
-					icon = IconStorage.getInstance().get(map.getUnits()[x].get(y).getClass());
+					icon = map.getUnits()[x].get(y).getIcon();
 				}
 				mapIcons[x][y].setIcon(icon);
 			}

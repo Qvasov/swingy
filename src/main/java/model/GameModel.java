@@ -1,7 +1,6 @@
 package model;
 
 import lombok.Getter;
-import lombok.Setter;
 import model.characters.enemies.Enemy;
 import model.characters.heroes.Hero;
 
@@ -11,7 +10,6 @@ public class GameModel {
 	private final Random random;
 	@Getter
 	private Map map;
-	@Setter
 	@Getter
 	private Hero hero;
 	private Enemy enemy;
@@ -19,18 +17,18 @@ public class GameModel {
 	private String battleLog;
 	@Getter
 	private State state;
-	private boolean gameOver;
 
 	public GameModel() {
 		this.random = new Random();
 		this.state = State.PICK_HERO;
 	}
 
-	public void downloadMap() {
-		this.map = new Map(hero);
+	public void downloadMap(Hero hero) {
+		this.hero = hero;
+		this.map = new Map(this.hero);
 		this.hero.getPosition().setX(map.getSize() / 2);
 		this.hero.getPosition().setY(map.getSize() / 2);
-		this.map.downloadEnemies();
+		this.map.downloadEnemies(hero.getLevel());
 		this.state = State.MOVEMENT;
 	}
 
@@ -80,12 +78,13 @@ public class GameModel {
 	}
 
 	public void fight() {
+		battleLog = "";
 		while (true) {
 			attack(this.hero, this.enemy);
 			if (enemy.isDead()) {
 				battleLog += String.format("%s has won the fight!\n", this.hero.getName());
-				hero.receiveExp(1000);
-				hero.setHp(100);
+				hero.receiveExp(enemy.getExp());
+//				hero.setHp(100);
 				enemy = null;
 				state = State.FIGHT_LOG;
 				return;
@@ -93,6 +92,7 @@ public class GameModel {
 			attack(this.enemy, this.hero);
 			if (hero.isDead()) {
 				battleLog += String.format("%s has died!\n It's Game Over", this.hero.getName());
+				map.getUnits()[enemy.getPosition().getX()].put(enemy.getPosition().getY(), enemy);
 				state = State.GAME_OVER;
 				return;
 			}

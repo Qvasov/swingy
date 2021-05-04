@@ -28,7 +28,7 @@ public class Map {
 		units[this.size / 2].put(size / 2, hero);
 	}
 
-	public void downloadEnemies() {
+	public void downloadEnemies(int level) {
 		int enemiesCount = (int) (ENEMIES_COUNT_MODIFIER * size * size);
 		int x;
 		int y;
@@ -36,7 +36,7 @@ public class Map {
 		Enemy enemy;
 
 		for (int i = 0; i < enemiesCount; i++) {
-			enemy = EnemyBuilder.getInstance().createEnemy();
+			enemy = EnemyBuilder.getInstance().createBandit(level);
 
 			while (true) {
 				x = generateCoordinate();

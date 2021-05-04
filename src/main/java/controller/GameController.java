@@ -2,6 +2,7 @@ package controller;
 
 import lombok.Getter;
 import model.GameModel;
+import model.characters.heroes.Hero;
 import view.GUI.HeroPickView;
 import view.GameView;
 
@@ -23,8 +24,8 @@ public class GameController implements KeyListener {
 		new HeroPickView(this).setVisible(true);
 	}
 
-	public void startGame() {
-		model.downloadMap();
+	public void startGame(Hero hero) {
+		model.downloadMap(hero);
 		view.updateView();
 	}
 

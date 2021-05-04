@@ -10,7 +10,7 @@ public class EnemyBuilder {
 		return builder;
 	}
 
-	public Enemy createEnemy() {
-		return new Enemy();
+	public Enemy createBandit(int level) {
+		return new Bandit(level);
 	}
 }
