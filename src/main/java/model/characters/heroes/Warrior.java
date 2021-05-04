@@ -11,7 +11,7 @@ public class Warrior extends Hero {
 	{{
 		put("level", 0);
 		put("experience", 0);
-		put("attack", 20);
+		put("attack", 35);
 		put("defence", 20);
 		put("hp", 100);
 	}};

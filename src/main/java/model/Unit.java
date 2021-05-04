@@ -11,16 +11,18 @@ public abstract class Unit {
 	private String name;
 	private int attack;
 	private int defence;
+	private int curHp;
 	private int hp;
 	private Icon icon;
 
 	//TODO воткнуть NOT NULL
-	public Unit(String name, int attack, int defence, int hp) {
+	protected Unit(String name, int attack, int defence, int hp) {
 		this.position = new Point();
 		this.name = name;
 		this.attack = attack;
 		this.defence = defence;
 		this.hp = hp;
+		this.curHp = this.hp;
 		this.icon = IconStorage.downloadImage(this.getClass().getSimpleName());
 	}
 
@@ -30,12 +32,19 @@ public abstract class Unit {
 
 	public int receiveDamage(int damage) {
 		damage -= defence;
-		hp -= damage;
+		if (damage <= 0) {
+			damage = 1;
+		}
+		curHp -= damage;
 		return damage;
 	}
 
+	public void recoveryHp(int hp) {
+		this.curHp = hp;
+	}
+
 	public boolean isDead() {
-		return hp <= 0;
+		return curHp <= 0;
 	}
 
 	public void increaseStats (int addAttack, int addDefence, int addHp) {

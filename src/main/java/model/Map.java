@@ -30,35 +30,36 @@ public class Map {
 
 	public void downloadEnemies(int level) {
 		int enemiesCount = (int) (ENEMIES_COUNT_MODIFIER * size * size);
-		int x;
-		int y;
-		HashMap<Integer, Unit> column;
 		Enemy enemy;
 
 		for (int i = 0; i < enemiesCount; i++) {
 			enemy = EnemyBuilder.getInstance().createBandit(level);
+			setEnemiesOnMap(enemy);
+		}
+	}
 
-			while (true) {
-				x = generateCoordinate();
-				column = units[x];
-				y = generateCoordinate();
-				if (column.get(y) == null) {
-					enemy.getPosition().setX(x);
-					enemy.getPosition().setY(y);
-					column.put(y, enemy);
-					break;
-				}
+	private void setEnemiesOnMap(Enemy enemy) {
+		int x;
+		int y;
+		HashMap<Integer, Unit> column;
+		while (true) {
+			x = generateCoordinate();
+			column = units[x];
+			y = generateCoordinate();
+			if (column.get(y) == null) {
+				enemy.getPosition().setX(x);
+				enemy.getPosition().setY(y);
+				column.put(y, enemy);
+				break;
 			}
 		}
 	}
 
 	private int generateCoordinate() {
 		int i = random.nextInt(size);
-
 		while (i == (size / 2)) {
 			i = random.nextInt(size);
 		}
-
 		return i;
 	}
 }

@@ -84,7 +84,7 @@ public class GameModel {
 			if (enemy.isDead()) {
 				battleLog += String.format("%s has won the fight!\n", this.hero.getName());
 				hero.receiveExp(enemy.getExp());
-//				hero.setHp(100);
+				hero.recoveryHp(hero.getHp());
 				enemy = null;
 				state = State.FIGHT_LOG;
 				return;
