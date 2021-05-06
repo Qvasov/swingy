@@ -16,12 +16,12 @@ public class GraphicView extends JFrame implements View {
 	private JPanel scrollContent;
 	private int mapSize;
 	private JLabel[][] mapIcons;
-	private JLabel nameLbl;
 	private JLabel name;
-	private JLabel expLbl;
 	private JLabel exp;
-	private JLabel levelLbl;
 	private JLabel level;
+	private JLabel attack;
+	private JLabel defence;
+	private JLabel hp;
 
 	public GraphicView(GameController controller) {
 		this.controller = controller;
@@ -65,6 +65,9 @@ public class GraphicView extends JFrame implements View {
 
 		this.level.setText(String.valueOf(controller.getModel().getHero().getLevel()));
 		this.exp.setText(controller.getModel().getHero().getExp() + " / " + controller.getModel().getHero().getExpToNextLvl());
+		this.attack.setText(String.valueOf(controller.getModel().getHero().getAttack()));
+		this.defence.setText(String.valueOf(controller.getModel().getHero().getDefence()));
+		this.hp.setText(String.valueOf(controller.getModel().getHero().getHp()));
 
 		if (controller.getModel().getState() == State.ATTACK) {
 			new AttackView(controller);
@@ -107,37 +110,59 @@ public class GraphicView extends JFrame implements View {
 		GroupLayout layout = new GroupLayout(heroInfo);
 		heroInfo.setLayout(layout);
 
-		this.nameLbl = new JLabel("Name:");
 		this.name = new JLabel(controller.getModel().getHero().getName());
-		this.expLbl = new JLabel("Experience:");
 		this.exp = new JLabel();
-		this.levelLbl = new JLabel("Level:");
 		this.level = new JLabel();
+		this.attack = new JLabel();
+		this.defence = new JLabel();
+		this.hp = new JLabel();
+		JLabel nameLbl = new JLabel("Name: ");
+		JLabel expLbl = new JLabel("Experience: ");
+		JLabel levelLbl = new JLabel("Level: ");
+		JLabel attackLbl = new JLabel("Attack: ");
+		JLabel defenceLbl = new JLabel("Defence: ");
+		JLabel hpLbl = new JLabel("HP: ");
 
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
 						.addComponent(nameLbl)
-						.addComponent(levelLbl)
 						.addComponent(expLbl)
+						.addComponent(levelLbl)
 				)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(name)
 						.addComponent(level)
 						.addComponent(exp)
+				)
+				.addGroup(layout.createParallelGroup()
+						.addComponent(attackLbl)
+						.addComponent(defenceLbl)
+						.addComponent(hpLbl)
+				)
+				.addGroup(layout.createParallelGroup()
+						.addComponent(attack)
+						.addComponent(defence)
+						.addComponent(hp)
 				)
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
 						.addComponent(nameLbl)
 						.addComponent(name)
+						.addComponent(attackLbl)
+						.addComponent(attack)
 				)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(levelLbl)
 						.addComponent(level)
+						.addComponent(defenceLbl)
+						.addComponent(defence)
 				)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(expLbl)
 						.addComponent(exp)
+						.addComponent(hpLbl)
+						.addComponent(hp)
 				)
 		);
 	}

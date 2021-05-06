@@ -34,11 +34,11 @@ public class Map {
 
 		for (int i = 0; i < enemiesCount; i++) {
 			enemy = EnemyBuilder.getInstance().createBandit(level);
-			setEnemiesOnMap(enemy);
+			putEnemyOnMap(enemy);
 		}
 	}
 
-	private void setEnemiesOnMap(Enemy enemy) {
+	private void putEnemyOnMap(Enemy enemy) {
 		int x;
 		int y;
 		HashMap<Integer, Unit> column;

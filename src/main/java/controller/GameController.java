@@ -42,6 +42,11 @@ public class GameController implements KeyListener {
 		}
 	}
 
+	public void equipItem() {
+		model.equipItem();
+		view.updateView();
+	}
+
 	public void ok() {
 		model.ok();
 		view.updateView();

@@ -2,9 +2,6 @@ package model.characters.heroes;
 
 import lombok.Getter;
 import model.DataBase;
-import model.artifacts.Light;
-import model.artifacts.Plate;
-import model.artifacts.Sword;
 
 import java.util.HashSet;
 import java.util.Map;

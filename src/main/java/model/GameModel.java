@@ -3,19 +3,19 @@ package model;
 import lombok.Getter;
 import model.characters.enemies.Enemy;
 import model.characters.heroes.Hero;
+import model.items.ItemFactory;
+import model.items.abstarct.Item;
 
 import java.util.Random;
 
+@Getter
 public class GameModel {
 	private final Random random;
-	@Getter
 	private Map map;
-	@Getter
 	private Hero hero;
 	private Enemy enemy;
-	@Getter
+	private Item item;
 	private String battleLog;
-	@Getter
 	private State state;
 
 	public GameModel() {
@@ -85,6 +85,7 @@ public class GameModel {
 				battleLog += String.format("%s has won the fight!\n", this.hero.getName());
 				hero.receiveExp(enemy.getExp());
 				hero.recoveryHp(hero.getHp());
+				item = ItemFactory.getInstance().generateItem(enemy);
 				enemy = null;
 				state = State.FIGHT_LOG;
 				return;
@@ -102,6 +103,12 @@ public class GameModel {
 	private void attack(Unit attacker, Unit defender) {
 		int damage = defender.receiveDamage(attacker.dealDamage());
 		battleLog += String.format("%s deals %d damage to %s\n", attacker.getName(), damage, defender.getName());
+	}
+
+	public void equipItem() {
+		item.equip(hero);
+		item = null;
+		ok();
 	}
 
 	public void ok() {

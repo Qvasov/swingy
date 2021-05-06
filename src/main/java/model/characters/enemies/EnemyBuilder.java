@@ -1,10 +1,7 @@
 package model.characters.enemies;
 
-import java.util.Random;
-
 public class EnemyBuilder {
 	private static final EnemyBuilder builder = new EnemyBuilder();
-	private Random random = new Random();
 
 	private EnemyBuilder() {
 	}
@@ -14,8 +11,10 @@ public class EnemyBuilder {
 	}
 
 	public Enemy createBandit(int level) {
-		Enemy enemy = new Bandit(level);
-		enemy.setItem(null);
-		return enemy;
+		return new Bandit(level);
+	}
+
+	public Enemy createWarlock(int level) {
+		return new Warlock(level);
 	}
 }

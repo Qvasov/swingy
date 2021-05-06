@@ -3,9 +3,9 @@ package model.characters.heroes;
 import lombok.Getter;
 import lombok.Setter;
 import model.Unit;
-import model.artifacts.abstarct.Armor;
-import model.artifacts.abstarct.Helm;
-import model.artifacts.abstarct.Weapon;
+import model.items.abstarct.Armor;
+import model.items.abstarct.Helm;
+import model.items.abstarct.Weapon;
 
 public abstract class Hero extends Unit {
 	@Getter
