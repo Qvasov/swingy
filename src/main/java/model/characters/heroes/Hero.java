@@ -7,12 +7,10 @@ import model.items.abstarct.Armor;
 import model.items.abstarct.Helm;
 import model.items.abstarct.Weapon;
 
+@Getter
 public abstract class Hero extends Unit {
-	@Getter
 	protected int level;
-	@Getter
 	private int exp;
-	@Getter
 	private int expToNextLvl;
 
 	@Setter
@@ -41,8 +39,7 @@ public abstract class Hero extends Unit {
 		}
 	}
 
-	@Override
-	public int getHp() {
+	public int getFullHp() {
 		return super.getHp() + ((helm != null) ? helm.getHp() : 0);
 	}
 

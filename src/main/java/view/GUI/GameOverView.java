@@ -9,11 +9,14 @@ import java.awt.event.ActionListener;
 
 public class GameOverView extends JDialog {
 	private GameController controller;
-	private JButton ok = new JButton("OK");
+	private JFrame parent;
+	private JButton exit = new JButton("Exit");
+	private JButton next = new JButton("Next Level");
 	private JLabel message = new JLabel("Game Over");
 
-	public GameOverView(GameController controller) {
+	public GameOverView(GameController controller, JFrame parent) {
 		this.controller = controller;
+		this.parent = parent;
 		initUI();
 	}
 
@@ -21,39 +24,55 @@ public class GameOverView extends JDialog {
 		//TODO сделать блокирование основного окна
 		setTitle("Result");
 		setResizable(false);
-		setSize(300, 300);
-		setLocationRelativeTo(null);
+		setSize(216, 0);
+		setLocationRelativeTo(parent);
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		Container pane = getContentPane();
+		final Container pane = getContentPane();
 		GroupLayout gl = new GroupLayout(pane);
 		pane.setLayout(gl);
 
+		gl.linkSize(exit, next);
 		gl.setAutoCreateGaps(true);
 		gl.setAutoCreateContainerGaps(true);
-		gl.setHorizontalGroup(gl.createParallelGroup()
+		gl.setHorizontalGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
+				.addComponent(message)
 				.addGroup(gl.createSequentialGroup()
-						.addComponent(message)
-				)
-				.addGroup(gl.createSequentialGroup()
-						.addComponent(ok)
+						.addComponent(next)
+						.addComponent(exit)
 				)
 		);
 		gl.setVerticalGroup(gl.createSequentialGroup()
-				.addGroup(gl.createParallelGroup()
-						.addComponent(message)
-				)
-				.addGroup(gl.createParallelGroup()
-						.addComponent(ok)
+				.addComponent(message)
+				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(next)
+						.addComponent(exit)
 				)
 		);
 
-		ok.addActionListener(new ActionListener() {
+		if (controller.getModel().getHero().isDead()) {
+			next.setEnabled(false);
+			next.setVisible(false);
+			exit.setText("OK");
+			setSize(88, 0);
+			setLocationRelativeTo(parent);
+		}
+
+		next.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO доделать гейм овер
 				dispose();
+				parent.dispose();
+				controller.startGame(controller.getModel().getHero());
+			}
+		});
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				parent.dispose();
+				controller.launchGame();
 			}
 		});
 

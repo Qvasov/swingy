@@ -26,7 +26,7 @@ public class GameController implements KeyListener {
 
 	public void startGame(Hero hero) {
 		model.downloadMap(hero);
-		view.updateView();
+		view.newGameMap();
 	}
 
 	public void fight() {
@@ -52,6 +52,10 @@ public class GameController implements KeyListener {
 		view.updateView();
 	}
 
+	public void saveHeroes() {
+		//TODO сделать сохранение
+	}
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 
@@ -66,7 +70,6 @@ public class GameController implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_ESCAPE:
-				System.exit(0);
 				break;
 			case KeyEvent.VK_UP:
 				model.moveUp();

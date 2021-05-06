@@ -2,6 +2,7 @@ package view.GUI;
 
 import controller.GameController;
 import model.characters.enemies.Enemy;
+import view.GameView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,13 +11,15 @@ import java.awt.event.ActionListener;
 
 public class AttackView extends JDialog {
 	private GameController controller;
+	private JFrame parent;
 	private JButton fight = new JButton("Fight");
 	private JButton run = new JButton("Run");
 	private JLabel enemyIcon = new JLabel();
 	private JPanel enemyStats = new JPanel();
 
-	public AttackView(GameController controller) {
+	public AttackView(GameController controller, JFrame parent) {
 		this.controller = controller;
+		this.parent = parent;
 		initUI();
 	}
 
@@ -24,8 +27,8 @@ public class AttackView extends JDialog {
 		//TODO сделать блокирование основного окна
 		setTitle("Battle");
 		setResizable(false);
-		setSize(300, 300);
-		setLocationRelativeTo(null);
+		setSize(160, 100);
+		setLocationRelativeTo(parent);
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 public class FightResultView extends JDialog {
 	private GameController controller;
+	private JFrame parent;
 	private JButton ok = new JButton("OK");
 	private JButton keep = new JButton("Keep");
 	private JTextArea log = new JTextArea();
@@ -16,8 +17,9 @@ public class FightResultView extends JDialog {
 	private JLabel itemNewIcon = new JLabel();
 	private JLabel itemNewDescription = new JLabel();
 
-	public FightResultView(GameController controller) {
+	public FightResultView(GameController controller, JFrame parent) {
 		this.controller = controller;
+		this.parent = parent;
 		initUI();
 	}
 
@@ -25,8 +27,8 @@ public class FightResultView extends JDialog {
 		//TODO сделать блокирование основного окна
 		setTitle("Result");
 		setResizable(false);
-		setSize(300, 300);
-		setLocationRelativeTo(null);
+		setSize(190, 120);
+		setLocationRelativeTo(parent);
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -76,6 +78,7 @@ public class FightResultView extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.equipItem();
+				dispose();
 			}
 		});
 

@@ -15,10 +15,9 @@ public class HeroPickView extends JFrame {
 	private JRadioButton load = new JRadioButton("Load Hero", false);
 	private ButtonGroup buttonGroup = new ButtonGroup();
 	private JLabel classLabel = new JLabel("Class:");
-	private JComboBox<String> heroClassCb = new JComboBox<>();
+	private JComboBox<String> heroClass = new JComboBox<>();
 	private JLabel nameLabel = new JLabel("Name:");
-	private JTextField heroName = new JTextField();
-	private JComboBox<String> heroNameCb = new JComboBox<>();
+	private JComboBox<String> heroName = new JComboBox<>();
 	private JLabel stats = new JLabel("Stats");
 	private JLabel levelLbl = new JLabel("Level:");
 	private JLabel expLbl = new JLabel("Experience:");
@@ -30,7 +29,8 @@ public class HeroPickView extends JFrame {
 	private JLabel attack = new JLabel();
 	private JLabel defence = new JLabel();
 	private JLabel hp = new JLabel();
-	private JButton ok = new JButton("OK");
+	private JButton start = new JButton("Start");
+	private JButton exit = new JButton("Exit");
 
 	public HeroPickView(GameController controller) {
 		this.controller = controller;
@@ -39,9 +39,9 @@ public class HeroPickView extends JFrame {
 
 	private void initGUI() {
 		setTitle("Hero pick");
-		int size = 350;
+		int size = 300;
 		setSize(size, size);
-		setPreferredSize(new Dimension(size, size - 100));
+		setPreferredSize(new Dimension(size, size - 80));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,20 +51,20 @@ public class HeroPickView extends JFrame {
 		container.setLayout(gl);
 		initLayout(gl);
 
-		heroClassCb.setMaximumSize(new Dimension(size / 3, 0));
-		heroName.setMaximumSize(new Dimension(size / 3 ,0));
-		heroNameCb.setMaximumSize(new Dimension(size / 3 ,0));
-
 		buttonGroup.add(create);
 		buttonGroup.add(load);
 		downloadClasses();
+		heroName.setEditable(true);
+		heroName.setPreferredSize(new Dimension(size / 3 ,0));
 
 		create.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				downloadClasses();
-				heroClassCb.setEnabled(true);
-				heroName.setEnabled(true);
+				heroClass.setEnabled(true);
+				heroClass.setSelectedItem(null);
+				heroName.setEditable(true);
+				heroName.setSelectedItem(null);
+				heroName.removeAllItems();
 			}
 		});
 
@@ -73,24 +73,21 @@ public class HeroPickView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				clearStats();
 				for (String name : DataBase.getInstance().getHeroNames()) {
-					heroNameCb.addItem(name);
+					heroName.addItem(name);
 				}
-				gl.replace(heroName, heroNameCb);
-				heroClassCb.setEnabled(false);
-				heroName.setEnabled(false);
-				heroName.setVisible(false);
-				heroNameCb.setVisible(true);
-				heroNameCb.setSelectedItem(null);
+				heroClass.setEnabled(false);
+				heroClass.setSelectedItem(null);
+				heroName.setEditable(false);
+				heroName.setSelectedItem(null);
 			}
 		});
 
-
-		heroClassCb.addActionListener(new ActionListener() {
+		heroClass.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (create.isSelected()) {
-					if (heroClassCb.getSelectedItem() != null) {
-						Map<String, Integer> stats = HeroBuilder.getInstance().getStats(String.valueOf(heroClassCb.getSelectedItem()));
+					if (heroClass.getSelectedItem() != null) {
+						Map<String, Integer> stats = HeroBuilder.getInstance().getStats(String.valueOf(heroClass.getSelectedItem()));
 						level.setText(stats.get("level").toString());
 						exp.setText(stats.get("experience").toString());
 						attack.setText(stats.get("attack").toString());
@@ -101,24 +98,24 @@ public class HeroPickView extends JFrame {
 			}
 		});
 
-		heroNameCb.addActionListener(new ActionListener() {
+		heroName.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (load.isSelected()) {
-					if (heroClassCb.getSelectedItem() != null) {
+					if (heroClass.getSelectedItem() != null) {
 
 					}
 				}
 			}
 		});
 
-		ok.addActionListener(new ActionListener() {
+		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (create.isSelected()) {
 					controller.startGame(HeroBuilder.getInstance().createHero(
-							String.valueOf(heroClassCb.getSelectedItem()),
-							heroName.getText()));
+							String.valueOf(heroClass.getSelectedItem()),
+							String.valueOf(heroName.getSelectedItem())));
 				} else if (load.isSelected()) {
 //					controller.startGame(HeroBuilder.getInstance().loadHero(
 //							String.valueOf(heroNameCb.getSelectedItem())));
@@ -127,27 +124,36 @@ public class HeroPickView extends JFrame {
 			}
 		});
 
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.saveHeroes();
+				dispose();
+			}
+		});
+
 		pack();
 	}
 
 	private void downloadClasses() {
-		heroClassCb.removeAllItems();
+		heroClass.removeAllItems();
 		for (String hero : HeroBuilder.getInstance().getHeroes()) {
-			heroClassCb.addItem(hero);
+			heroClass.addItem(hero);
 		}
-		heroClassCb.setSelectedItem(null);
+		heroClass.setSelectedItem(null);
 	}
 
 	private void clearStats() {
-		String text = null;
-		level.setText(text);
-		exp.setText(text);
-		attack.setText(text);
-		defence.setText(text);
-		hp.setText(text);
+		level.setText(null);
+		exp.setText(null);
+		attack.setText(null);
+		defence.setText(null);
+		hp.setText(null);
 	}
 
 	private void initLayout(GroupLayout gl) {
+		gl.linkSize(start, exit);
+		gl.linkSize(heroClass, heroName);
 		gl.setAutoCreateGaps(true);
 		gl.setAutoCreateContainerGaps(true);
 		gl.setHorizontalGroup(gl.createSequentialGroup()
@@ -159,10 +165,12 @@ public class HeroPickView extends JFrame {
 										.addComponent(nameLabel)
 								)
 								.addGroup(gl.createParallelGroup()
-										.addComponent(heroClassCb)
+										.addComponent(heroClass)
 										.addComponent(heroName)
 								)
 						)
+						.addComponent(start)
+						.addComponent(exit)
 				)
 				.addGroup(gl.createParallelGroup()
 						.addComponent(load)
@@ -185,8 +193,6 @@ public class HeroPickView extends JFrame {
 									)
 								)
 						)
-						.addGroup(gl.createSequentialGroup())
-						.addComponent(ok)
 				)
 		);
 		gl.setVerticalGroup(gl.createSequentialGroup()
@@ -198,12 +204,14 @@ public class HeroPickView extends JFrame {
 						.addGroup(gl.createSequentialGroup()
 								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(classLabel)
-										.addComponent(heroClassCb)
+										.addComponent(heroClass)
 								)
 								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(nameLabel)
 										.addComponent(heroName)
 								)
+								.addComponent(start)
+								.addComponent(exit)
 						)
 						.addGroup(gl.createSequentialGroup()
 								.addComponent(stats)
@@ -229,7 +237,6 @@ public class HeroPickView extends JFrame {
 								)
 						)
 				)
-				.addComponent(ok)
 		);
 	}
 }

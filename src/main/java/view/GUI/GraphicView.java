@@ -10,12 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GraphicView extends JFrame implements View {
-	private GameController controller;
+	private final GameController controller;
 	private JPanel heroInfo;
 	private JScrollPane scrollPane;
 	private JPanel scrollContent;
-	private int mapSize;
-	private JLabel[][] mapIcons;
+	private final int mapSize;
+	private final JLabel[][] mapIcons;
 	private JLabel name;
 	private JLabel exp;
 	private JLabel level;
@@ -65,16 +65,32 @@ public class GraphicView extends JFrame implements View {
 
 		this.level.setText(String.valueOf(controller.getModel().getHero().getLevel()));
 		this.exp.setText(controller.getModel().getHero().getExp() + " / " + controller.getModel().getHero().getExpToNextLvl());
-		this.attack.setText(String.valueOf(controller.getModel().getHero().getAttack()));
-		this.defence.setText(String.valueOf(controller.getModel().getHero().getDefence()));
-		this.hp.setText(String.valueOf(controller.getModel().getHero().getHp()));
+
+		String stat;
+		stat = String.valueOf(controller.getModel().getHero().getAttack());
+		if (controller.getModel().getHero().getWeapon() != null) {
+			stat += " + " + controller.getModel().getHero().getWeapon().getAttack();
+		}
+		this.attack.setText(stat);
+
+		stat = String.valueOf(controller.getModel().getHero().getDefence());
+		if (controller.getModel().getHero().getArmor() != null) {
+			stat += " + " + controller.getModel().getHero().getArmor().getDefence();
+		}
+		this.defence.setText(stat);
+
+		stat = String.valueOf(controller.getModel().getHero().getHp());
+		if (controller.getModel().getHero().getHelm() != null) {
+			stat += " + " + controller.getModel().getHero().getHelm().getHp();
+		}
+		this.hp.setText(stat);
 
 		if (controller.getModel().getState() == State.ATTACK) {
-			new AttackView(controller);
+			new AttackView(controller, this);
 		} else if (controller.getModel().getState() == State.FIGHT_LOG) {
-			new FightResultView(controller);
+			new FightResultView(controller, this);
 		} else if (controller.getModel().getState() == State.GAME_OVER) {
-			new GameOverView(controller);
+			new GameOverView(controller, this);
 		}
 	}
 
@@ -86,6 +102,8 @@ public class GraphicView extends JFrame implements View {
 		int sideSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
 		setSize(sideSize, sideSize);
 		setMaximumSize(new Dimension(sideSize, sideSize));
+		setPreferredSize(new Dimension(sideSize, sideSize));
+		setMinimumSize(new Dimension(sideSize, sideSize));
 		setLocationRelativeTo(null);
 
 		Container pane = getContentPane();
@@ -95,7 +113,7 @@ public class GraphicView extends JFrame implements View {
 		layout.setAutoCreateContainerGaps(true);
 		layout.setAutoCreateGaps(true);
 
-		layout.setHorizontalGroup(layout.createParallelGroup()
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
 				.addComponent(heroInfo)
 				.addComponent(scrollPane));
 		layout.setVerticalGroup(layout.createSequentialGroup()
@@ -121,7 +139,7 @@ public class GraphicView extends JFrame implements View {
 		JLabel levelLbl = new JLabel("Level: ");
 		JLabel attackLbl = new JLabel("Attack: ");
 		JLabel defenceLbl = new JLabel("Defence: ");
-		JLabel hpLbl = new JLabel("HP: ");
+		JLabel hpLbl = new JLabel("Hit points: ");
 
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
@@ -134,6 +152,7 @@ public class GraphicView extends JFrame implements View {
 						.addComponent(level)
 						.addComponent(exp)
 				)
+				.addGap(20)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(attackLbl)
 						.addComponent(defenceLbl)
@@ -168,7 +187,7 @@ public class GraphicView extends JFrame implements View {
 	}
 
 	private void initScrollContent() {
-		this.scrollContent = new JPanel();
+		this.scrollContent = new JPanel(new GridBagLayout());
 		this.scrollPane = new JScrollPane(scrollContent);
 
 		int sideSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
@@ -176,8 +195,9 @@ public class GraphicView extends JFrame implements View {
 		scrollPane.getVerticalScrollBar().setUnitIncrement(15);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(15);
 
-		GroupLayout layout = new GroupLayout(scrollContent);
-		scrollContent.setLayout(layout);
+		JPanel map = new JPanel();
+		GroupLayout layout = new GroupLayout(map);
+		map.setLayout(layout);
 
 		GroupLayout.SequentialGroup sg;
 		GroupLayout.ParallelGroup pg;
@@ -200,6 +220,8 @@ public class GraphicView extends JFrame implements View {
 			pg.addGroup(sg);
 		}
 		layout.setVerticalGroup(pg);
+
+		scrollContent.add(map, new GridBagConstraints());
 	}
 
 	private void downloadTextures() {

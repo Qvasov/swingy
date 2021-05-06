@@ -17,11 +17,11 @@ public class GameView {
 	public GameView() {
 	}
 
+	public void newGameMap() {
+		this.view = new GraphicView(controller);
+	}
+
 	public void updateView() {
-		if (this.view == null) {
-			this.view = new GraphicView(controller);
-		} else {
-			view.updateView();
-		}
+		view.updateView();
 	}
 }

@@ -53,9 +53,8 @@ public class GameModel {
 		int srcY = hero.getPosition().getY();
 		destX += srcX;
 		destY += srcY;
-		//проверка на границу карты
 		if (destY < 0 || destY > map.getSize() - 1 || destX < 0 || destX > map.getSize() - 1) {
-			//вывод сообщения, что это граница карты в textArea
+			state = State.GAME_OVER;
 		} else {
 			enemy = (Enemy) map.getUnits()[destX].put(destY, map.getUnits()[srcX].remove(srcY));
 			hero.getPosition().setX(destX);
@@ -84,7 +83,7 @@ public class GameModel {
 			if (enemy.isDead()) {
 				battleLog += String.format("%s has won the fight!\n", this.hero.getName());
 				hero.receiveExp(enemy.getExp());
-				hero.recoveryHp(hero.getHp());
+				hero.recoveryHp(hero.getFullHp());
 				item = ItemFactory.getInstance().generateItem(enemy);
 				enemy = null;
 				state = State.FIGHT_LOG;
@@ -108,7 +107,7 @@ public class GameModel {
 	public void equipItem() {
 		item.equip(hero);
 		item = null;
-		ok();
+		state = State.MOVEMENT;
 	}
 
 	public void ok() {
