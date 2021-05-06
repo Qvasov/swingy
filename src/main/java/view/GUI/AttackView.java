@@ -20,11 +20,11 @@ public class AttackView extends JDialog {
 	public AttackView(GameController controller, JFrame parent) {
 		this.controller = controller;
 		this.parent = parent;
+		parent.setEnabled(false);
 		initUI();
 	}
 
 	private void initUI() {
-		//TODO сделать блокирование основного окна
 		setTitle("Battle");
 		setResizable(false);
 		setSize(160, 100);
@@ -37,6 +37,45 @@ public class AttackView extends JDialog {
 		fight.setToolTipText("Fight");
 		run.setToolTipText("Try to avoid the fight (50% chance)");
 
+		initLayout();
+
+		fight.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.fight();
+				dispose();
+				parent.setEnabled(true);
+			}
+		});
+
+		run.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.run();
+				dispose();
+				parent.setEnabled(true);
+			}
+		});
+
+		pack();
+		setVisible(true);
+	}
+
+	private void initEnemyStats() {
+		Enemy enemy = controller.getModel().getEnemy();
+		GridLayout gl = new GridLayout(0, 2);
+		enemyStats.setLayout(gl);
+		enemyStats.add(new JLabel("Name: "));
+		enemyStats.add(new JLabel(enemy.getName()));
+		enemyStats.add(new JLabel("HP: "));
+		enemyStats.add(new JLabel(String.valueOf(enemy.getHp())));
+		enemyStats.add(new JLabel("Attack: "));
+		enemyStats.add(new JLabel(String.valueOf(enemy.getAttack())));
+		enemyStats.add(new JLabel("Defence: "));
+		enemyStats.add(new JLabel(String.valueOf(enemy.getDefence())));
+	}
+
+	private void initLayout() {
 		Container pane = getContentPane();
 		GroupLayout gl = new GroupLayout(pane);
 		pane.setLayout(gl);
@@ -60,38 +99,5 @@ public class AttackView extends JDialog {
 						.addComponent(run)
 				)
 		);
-
-		fight.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.fight();
-				dispose();
-			}
-		});
-
-		run.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.run();
-				dispose();
-			}
-		});
-
-		pack();
-		setVisible(true);
-	}
-
-	public void initEnemyStats() {
-		Enemy enemy = controller.getModel().getEnemy();
-		GridLayout gl = new GridLayout(0, 2);
-		enemyStats.setLayout(gl);
-		enemyStats.add(new JLabel("Name: "));
-		enemyStats.add(new JLabel(enemy.getName()));
-		enemyStats.add(new JLabel("HP: "));
-		enemyStats.add(new JLabel(String.valueOf(enemy.getHp())));
-		enemyStats.add(new JLabel("Attack: "));
-		enemyStats.add(new JLabel(String.valueOf(enemy.getAttack())));
-		enemyStats.add(new JLabel("Defence: "));
-		enemyStats.add(new JLabel(String.valueOf(enemy.getDefence())));
 	}
 }

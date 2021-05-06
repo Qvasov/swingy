@@ -20,11 +20,11 @@ public class FightResultView extends JDialog {
 	public FightResultView(GameController controller, JFrame parent) {
 		this.controller = controller;
 		this.parent = parent;
+		parent.setEnabled(false);
 		initUI();
 	}
 
 	private void initUI() {
-		//TODO сделать блокирование основного окна
 		setTitle("Result");
 		setResizable(false);
 		setSize(190, 120);
@@ -32,6 +32,46 @@ public class FightResultView extends JDialog {
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
+		initLayout();
+
+		log.setEditable(false);
+		log.setRows(5);
+		log.setText(controller.getModel().getBattleLog());
+
+		if (controller.getModel().getItem() != null) {
+			itemNewIcon.setIcon(controller.getModel().getItem().getIcon());
+			itemNewDescription.setText(controller.getModel().getItem().getStats());
+			keep.setToolTipText("Keep item");
+			ok.setText("Leave");
+			ok.setToolTipText("Leave item");
+		} else {
+			keep.setEnabled(false);
+			keep.setVisible(false);
+		}
+
+		keep.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.equipItem();
+				dispose();
+				parent.setEnabled(true);
+			}
+		});
+
+		ok.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.ok();
+				dispose();
+				parent.setEnabled(true);
+			}
+		});
+
+		pack();
+		setVisible(true);
+	}
+
+	private void initLayout() {
 		Container pane = getContentPane();
 		GroupLayout gl = new GroupLayout(pane);
 		pane.setLayout(gl);
@@ -58,39 +98,5 @@ public class FightResultView extends JDialog {
 						.addComponent(ok)
 				)
 		);
-
-		log.setEditable(false);
-		log.setRows(5);
-		log.setText(controller.getModel().getBattleLog());
-
-		if (controller.getModel().getItem() != null) {
-			itemNewIcon.setIcon(controller.getModel().getItem().getIcon());
-			itemNewDescription.setText(controller.getModel().getItem().getStats());
-			keep.setToolTipText("Keep item");
-			ok.setText("Leave");
-			ok.setToolTipText("Leave item");
-		} else {
-			keep.setEnabled(false);
-			keep.setVisible(false);
-		}
-
-		keep.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.equipItem();
-				dispose();
-			}
-		});
-
-		ok.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.ok();
-				dispose();
-			}
-		});
-
-		pack();
-		setVisible(true);
 	}
 }

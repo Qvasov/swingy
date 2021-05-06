@@ -17,11 +17,11 @@ public class GameOverView extends JDialog {
 	public GameOverView(GameController controller, JFrame parent) {
 		this.controller = controller;
 		this.parent = parent;
+		parent.setEnabled(false);
 		initUI();
 	}
 
 	private void initUI() {
-		//TODO сделать блокирование основного окна
 		setTitle("Result");
 		setResizable(false);
 		setSize(216, 0);
@@ -29,27 +29,7 @@ public class GameOverView extends JDialog {
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		final Container pane = getContentPane();
-		GroupLayout gl = new GroupLayout(pane);
-		pane.setLayout(gl);
-
-		gl.linkSize(exit, next);
-		gl.setAutoCreateGaps(true);
-		gl.setAutoCreateContainerGaps(true);
-		gl.setHorizontalGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
-				.addComponent(message)
-				.addGroup(gl.createSequentialGroup()
-						.addComponent(next)
-						.addComponent(exit)
-				)
-		);
-		gl.setVerticalGroup(gl.createSequentialGroup()
-				.addComponent(message)
-				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(next)
-						.addComponent(exit)
-				)
-		);
+		initLayout();
 
 		if (controller.getModel().getHero().isDead()) {
 			next.setEnabled(false);
@@ -78,5 +58,29 @@ public class GameOverView extends JDialog {
 
 		pack();
 		setVisible(true);
+	}
+
+	private void initLayout() {
+		Container pane = getContentPane();
+		GroupLayout gl = new GroupLayout(pane);
+		pane.setLayout(gl);
+
+		gl.linkSize(exit, next);
+		gl.setAutoCreateGaps(true);
+		gl.setAutoCreateContainerGaps(true);
+		gl.setHorizontalGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
+				.addComponent(message)
+				.addGroup(gl.createSequentialGroup()
+						.addComponent(next)
+						.addComponent(exit)
+				)
+		);
+		gl.setVerticalGroup(gl.createSequentialGroup()
+				.addComponent(message)
+				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(next)
+						.addComponent(exit)
+				)
+		);
 	}
 }
