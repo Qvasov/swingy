@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
 
-public class HeroPickView extends JFrame {
+public class HeroPickGuiView extends JFrame {
 	private GameController controller;
 	private JRadioButton create = new JRadioButton("Create Hero", true);
 	private JRadioButton load = new JRadioButton("Load Hero", false);
@@ -32,7 +32,7 @@ public class HeroPickView extends JFrame {
 	private JButton start = new JButton("Start");
 	private JButton exit = new JButton("Exit");
 
-	public HeroPickView(GameController controller) {
+	public HeroPickGuiView(GameController controller) {
 		this.controller = controller;
 		initGUI();
 	}
@@ -133,6 +133,7 @@ public class HeroPickView extends JFrame {
 		});
 
 		pack();
+		setVisible(true);
 	}
 
 	private void downloadClasses() {
@@ -165,8 +166,8 @@ public class HeroPickView extends JFrame {
 										.addComponent(nameLabel)
 								)
 								.addGroup(gl.createParallelGroup()
-										.addComponent(heroClass)
 										.addComponent(heroName)
+										.addComponent(heroClass)
 								)
 						)
 						.addComponent(start)
@@ -203,12 +204,12 @@ public class HeroPickView extends JFrame {
 				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(gl.createSequentialGroup()
 								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(classLabel)
-										.addComponent(heroClass)
-								)
-								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(nameLabel)
 										.addComponent(heroName)
+								)
+								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(classLabel)
+										.addComponent(heroClass)
 								)
 								.addComponent(start)
 								.addComponent(exit)

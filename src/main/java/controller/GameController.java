@@ -3,7 +3,6 @@ package controller;
 import lombok.Getter;
 import model.GameModel;
 import model.characters.heroes.Hero;
-import view.GUI.HeroPickView;
 import view.GameView;
 
 import java.awt.event.KeyEvent;
@@ -21,7 +20,7 @@ public class GameController implements KeyListener {
 	}
 
 	public void launchGame() {
-		new HeroPickView(this).setVisible(true);
+		view.heroPick();
 	}
 
 	public void startGame(Hero hero) {
@@ -85,5 +84,16 @@ public class GameController implements KeyListener {
 				break;
 		}
 		view.updateView();
+	}
+
+	public static void main(String[] args) {
+		/*if (args.length != 1) {
+			System.out.println("usage: java -jar swingy.jar (console | gui)");
+			return;
+		}*/
+
+		//Обработка флагов
+
+		new GameController(new GameModel(), new GameView(GameView.CONSOLE)).launchGame();
 	}
 }

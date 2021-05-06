@@ -3,10 +3,15 @@ package view;
 import controller.GameController;
 import lombok.Getter;
 import lombok.Setter;
-import model.State;
 import view.GUI.GraphicView;
+import view.GUI.HeroPickGuiView;
+import view.console.ConsoleView;
+import view.console.HeroPickConsoleView;
 
 public class GameView {
+	public static final int CONSOLE = 0;
+	public static final int GUI = 1;
+	private int mode;
 	@Setter
 	private GameController controller;
 	@Getter
@@ -14,11 +19,30 @@ public class GameView {
 //	private ConsoleView consoleView;
 	private View view;
 
-	public GameView() {
+	public GameView(int mode) {
+		this.mode = mode;
+	}
+
+	public void heroPick() {
+		switch (mode) {
+			case GUI:
+				new HeroPickGuiView(controller);
+				break;
+			case CONSOLE:
+				new HeroPickConsoleView(controller);
+				break;
+		}
 	}
 
 	public void newGameMap() {
-		this.view = new GraphicView(controller);
+		switch (mode) {
+			case GUI:
+				this.view = new GraphicView(controller);
+				break;
+			case CONSOLE:
+				this.view = new ConsoleView(controller);
+				break;
+		}
 	}
 
 	public void updateView() {
