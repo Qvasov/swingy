@@ -4,5 +4,6 @@ public enum Menu {
 	MAIN,
 	CREATE,
 	LOAD,
-	NAME
+	NAME,
+	CLASS
 }

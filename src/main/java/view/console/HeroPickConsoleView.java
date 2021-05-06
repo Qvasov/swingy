@@ -1,8 +1,10 @@
 package view.console;
 
 import controller.GameController;
+import model.characters.heroes.HeroBuilder;
 
 import java.util.Scanner;
+import java.util.Set;
 
 import static view.console.Menu.*;
 
@@ -10,7 +12,8 @@ public class HeroPickConsoleView {
 	private GameController controller;
 	private Scanner scanner = new Scanner(System.in);
 	private String input;
-	private String name;
+	private String heroName;
+	private String heroClass;
 	private Menu menu = MAIN;
 
 	public HeroPickConsoleView(GameController controller) {
@@ -21,6 +24,8 @@ public class HeroPickConsoleView {
 			switch (menu) {
 				case MAIN:
 					if (input.equals("1")) {
+						heroName = "";
+						heroClass = "";
 						create();
 					} else if (input.equals("2")) {
 						load();
@@ -32,17 +37,25 @@ public class HeroPickConsoleView {
 					if (input.equals("1")) {
 						name();
 					} else if (input.equals("2")) {
-						load();
+						chooseClass();
 					} else if (input.equals("3")) {
 						mainMenu();
 					}
 					break;
 				case NAME:
-					if (input.matches("[a-zA-Z]")) {
-						name = input;
-					} else if (input.equals("!back")) {
-						create();
+					//TODO ограничение на символы
+					if (input.matches("[a-zA-Z]*")) {
+						heroName = input;
 					}
+					create();
+					break;
+				case CLASS:
+					if (input.equals("1")) {
+						heroClass = "Warrior";
+					} else if (input.equals("2")) {
+						heroClass = "Rogue";
+					}
+					create();
 					break;
 			}
 		}
@@ -61,9 +74,17 @@ public class HeroPickConsoleView {
 	private void create() {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
-				"---------------------\n" +
-				"1. Name\n" +
-				"2. Class");
+				"---------------------");
+		if (!heroName.isEmpty()) {
+			System.out.println("Name: " + heroName);
+		}
+		if (!heroClass.isEmpty()) {
+			System.out.println("Class: " + heroClass);
+			//TODO статы клсса героя
+		}
+		System.out.println("1. Enter Name\n" +
+				"2. Choose Class\n" +
+				"3. Back");
 		menu = CREATE;
 	}
 
@@ -82,5 +103,11 @@ public class HeroPickConsoleView {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
 				"---------------------");
+		int i = 1;
+		for (String hero : HeroBuilder.getInstance().getHeroes()) {
+			System.out.println(i + ". " + hero);
+			i++;
+		}
+		menu = CLASS;
 	}
 }
