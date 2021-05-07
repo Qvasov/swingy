@@ -3,14 +3,14 @@ package view.console;
 import controller.GameController;
 import model.characters.heroes.HeroBuilder;
 
+import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 import static view.console.Menu.*;
 
 public class HeroPickConsoleView {
-	private GameController controller;
-	private Scanner scanner = new Scanner(System.in);
+	private final GameController controller;
+	private final Scanner scanner = new Scanner(System.in);
 	private String input;
 	private String heroName;
 	private String heroClass;
@@ -18,6 +18,8 @@ public class HeroPickConsoleView {
 
 	public HeroPickConsoleView(GameController controller) {
 		this.controller = controller;
+		this.heroName = "";
+		this.heroClass = "";
 		mainMenu();
 		while (scanner.hasNext()) {
 			input = scanner.next();
@@ -39,6 +41,12 @@ public class HeroPickConsoleView {
 					} else if (input.equals("2")) {
 						chooseClass();
 					} else if (input.equals("3")) {
+						if (!heroClass.isEmpty() && !heroName.isEmpty()) {
+							controller.startGame(HeroBuilder.getInstance().createHero(heroClass, heroName));
+						} else {
+							create();
+						}
+					} else if (input.equals("4")) {
 						mainMenu();
 					}
 					break;
@@ -64,8 +72,8 @@ public class HeroPickConsoleView {
 	private void mainMenu() {
 		System.out.println("---------------------\n" +
 				"|     Hero Pick     |\n" +
-				"---------------------\n" +
-				"1. Create Hero\n" +
+				"---------------------");
+		System.out.println("1. Create Hero\n" +
 				"2. Load Hero\n" +
 				"3. Exit");
 		menu = MAIN;
@@ -75,20 +83,32 @@ public class HeroPickConsoleView {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
 				"---------------------");
-		if (!heroName.isEmpty()) {
+		if (heroName.isEmpty()) {
+			System.out.println("You need enter Name of your Hero");
+		} else {
 			System.out.println("Name: " + heroName);
 		}
-		if (!heroClass.isEmpty()) {
+		if (heroClass.isEmpty()) {
+			System.out.println("You need to choose Class");
+		} else {
+			Map<String, Integer> stats = HeroBuilder.getInstance().getStats(heroClass);
 			System.out.println("Class: " + heroClass);
-			//TODO статы клсса героя
+			System.out.printf("Level: %s\n" +
+							"Experience: %s\n" +
+							"Attack: %s\n" +
+							"Defence: %s\n" +
+							"Hit points: %s\n",
+					stats.get("level"), stats.get("experience"), stats.get("attack"), stats.get("defence"), stats.get("hp"));
 		}
 		System.out.println("1. Enter Name\n" +
 				"2. Choose Class\n" +
-				"3. Back");
+				"3. Start\n" +
+				"4. Back");
 		menu = CREATE;
 	}
 
 	private void load() {
+		menu = LOAD;
 	}
 
 	private void name() {

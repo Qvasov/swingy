@@ -51,4 +51,6 @@ public abstract class Unit {
 		this.defence += addDefence;
 		this.hp += addHp;
 	}
+
+	public abstract String getSymbol();
 }

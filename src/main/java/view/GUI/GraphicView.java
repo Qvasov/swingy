@@ -85,12 +85,16 @@ public class GraphicView extends JFrame implements View {
 		}
 		this.hp.setText(stat);
 
-		if (controller.getModel().getState() == State.ATTACK) {
-			new AttackView(controller, this);
-		} else if (controller.getModel().getState() == State.FIGHT_LOG) {
-			new FightResultView(controller, this);
-		} else if (controller.getModel().getState() == State.GAME_OVER) {
-			new GameOverView(controller, this);
+		switch (controller.getModel().getState()) {
+			case ATTACK:
+				new AttackView(controller, this);
+				break;
+			case FIGHT_LOG:
+				new FightResultView(controller, this);
+				break;
+			case GAME_OVER:
+				new GameOverView(controller, this);
+				break;
 		}
 	}
 

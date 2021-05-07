@@ -54,4 +54,9 @@ public abstract class Hero extends Unit {
 	}
 
 	public abstract void levelUp();
+
+	@Override
+	public String getSymbol() {
+		return "H";
+	}
 }

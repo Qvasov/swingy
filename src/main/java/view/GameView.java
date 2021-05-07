@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import controller.GameController;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,8 @@ public class GameView {
 //	private ConsoleView consoleView;
 	private View view;
 
+
+	//TODO Продвмать интерфейсы
 	public GameView(int mode) {
 		this.mode = mode;
 	}

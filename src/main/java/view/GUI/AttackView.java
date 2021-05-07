@@ -35,7 +35,7 @@ public class AttackView extends JDialog {
 		enemyIcon.setIcon(controller.getModel().getEnemy().getIcon());
 		initEnemyStats();
 		fight.setToolTipText("Fight");
-		run.setToolTipText("Try to avoid the fight (50% chance)");
+		run.setToolTipText("50% chance to avoid the fight");
 
 		initLayout();
 
