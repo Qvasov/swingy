@@ -1,6 +1,6 @@
 package view.console;
 
-public enum Menu {
+public enum MenuState {
 	MAIN,
 	CREATE,
 	LOAD,

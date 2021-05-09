@@ -16,6 +16,10 @@ public abstract class Armor extends Item {
 		hero.setArmor(this);
 	}
 
+	protected void addClassBonus(int bonus) {
+		defence += bonus;
+	}
+
 	@Override
 	public String getStats() {
 		return String.format("Defence: %d", defence);

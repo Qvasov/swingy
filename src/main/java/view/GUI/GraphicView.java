@@ -1,15 +1,15 @@
 package view.GUI;
 
 import controller.GameController;
-import model.*;
+import model.IconStorage;
+import model.Map;
 import model.characters.Empty;
 import model.characters.heroes.Hero;
-import view.View;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GraphicView extends JFrame implements View {
+public class GraphicView extends JFrame {
 	private final GameController controller;
 	private JPanel heroInfo;
 	private JScrollPane scrollPane;
@@ -48,7 +48,6 @@ public class GraphicView extends JFrame implements View {
 		setVisible(true);
 	}
 
-	@Override
 	public void updateView() {
 		Hero hero = controller.getModel().getHero();
 		Map map = controller.getModel().getMap();
@@ -67,7 +66,7 @@ public class GraphicView extends JFrame implements View {
 		this.exp.setText(controller.getModel().getHero().getExp() + " / " + controller.getModel().getHero().getExpToNextLvl());
 
 		String stat;
-		stat = String.valueOf(controller.getModel().getHero().getAttack());
+		stat = controller.getModel().getHero().getMinAttack() + " - " + controller.getModel().getHero().getMaxAttack();
 		if (controller.getModel().getHero().getWeapon() != null) {
 			stat += " + " + controller.getModel().getHero().getWeapon().getAttack();
 		}
@@ -92,8 +91,8 @@ public class GraphicView extends JFrame implements View {
 			case FIGHT_LOG:
 				new FightResultView(controller, this);
 				break;
-			case GAME_OVER:
-				new GameOverView(controller, this);
+			case NEXT:
+				new NextView(controller, this);
 				break;
 		}
 	}
@@ -141,9 +140,9 @@ public class GraphicView extends JFrame implements View {
 		JLabel nameLbl = new JLabel("Name: ");
 		JLabel expLbl = new JLabel("Experience: ");
 		JLabel levelLbl = new JLabel("Level: ");
+		JLabel hpLbl = new JLabel("HP: ");
 		JLabel attackLbl = new JLabel("Attack: ");
 		JLabel defenceLbl = new JLabel("Defence: ");
-		JLabel hpLbl = new JLabel("Hit points: ");
 
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
@@ -163,29 +162,29 @@ public class GraphicView extends JFrame implements View {
 						.addComponent(hpLbl)
 				)
 				.addGroup(layout.createParallelGroup()
+						.addComponent(hp)
 						.addComponent(attack)
 						.addComponent(defence)
-						.addComponent(hp)
 				)
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
 						.addComponent(nameLbl)
 						.addComponent(name)
-						.addComponent(attackLbl)
-						.addComponent(attack)
+						.addComponent(hpLbl)
+						.addComponent(hp)
 				)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(levelLbl)
 						.addComponent(level)
-						.addComponent(defenceLbl)
-						.addComponent(defence)
+						.addComponent(attackLbl)
+						.addComponent(attack)
 				)
 				.addGroup(layout.createParallelGroup()
 						.addComponent(expLbl)
 						.addComponent(exp)
-						.addComponent(hpLbl)
-						.addComponent(hp)
+						.addComponent(defenceLbl)
+						.addComponent(defence)
 				)
 		);
 	}

@@ -27,7 +27,7 @@ public class FightResultView extends JDialog {
 	private void initUI() {
 		setTitle("Result");
 		setResizable(false);
-		setSize(190, 120);
+		setSize(214, 160);
 		setLocationRelativeTo(parent);
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -35,7 +35,7 @@ public class FightResultView extends JDialog {
 		initLayout();
 
 		log.setEditable(false);
-		log.setRows(5);
+		log.setRows(8);
 		log.setText(controller.getModel().getBattleLog());
 
 		if (controller.getModel().getItem() != null) {
@@ -44,6 +44,10 @@ public class FightResultView extends JDialog {
 			keep.setToolTipText("Keep item");
 			ok.setText("Leave");
 			ok.setToolTipText("Leave item");
+		} else if (controller.getModel().getHero().isDead()) {
+			itemNewDescription.setText("GAME OVER");
+			keep.setEnabled(false);
+			keep.setVisible(false);
 		} else {
 			keep.setEnabled(false);
 			keep.setVisible(false);
@@ -52,20 +56,31 @@ public class FightResultView extends JDialog {
 		keep.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.equipItem();
-				dispose();
 				parent.setEnabled(true);
+				dispose();
+				controller.equipItem();
 			}
 		});
 
-		ok.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.ok();
-				dispose();
-				parent.setEnabled(true);
-			}
-		});
+		if (controller.getModel().getHero().isDead()) {
+			ok.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					parent.dispose();
+					dispose();
+					controller.launchGame();
+				}
+			});
+		} else {
+			ok.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					parent.setEnabled(true);
+					dispose();
+					controller.ok();
+				}
+			});
+		}
 
 		pack();
 		setVisible(true);

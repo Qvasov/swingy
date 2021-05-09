@@ -5,7 +5,7 @@ import model.characters.heroes.Hero;
 
 public abstract class Weapon extends Item {
 	@Getter
-	private final int attack;
+	private int attack;
 
 	protected Weapon(int attack) {
 		this.attack = attack;
@@ -14,6 +14,10 @@ public abstract class Weapon extends Item {
 	@Override
 	public void equip(Hero hero) {
 		hero.setWeapon(this);
+	}
+
+	protected void addClassBonus(int bonus) {
+		attack += bonus;
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class HeroBuilder {
 	@Getter
 	private final Set<String> heroes = new HashSet<String>() {{
 		add(Warrior.class.getSimpleName());
-		add(Rogue.class.getSimpleName());
+		add(Ranger.class.getSimpleName());
 	}};
 
 	private HeroBuilder() {
@@ -26,8 +26,8 @@ public class HeroBuilder {
 		switch (heroClass) {
 			case "Warrior":
 				return Warrior.getDefaultStats();
-			case "Rogue":
-				return Rogue.getDefaultStats();
+			case "Ranger":
+				return Ranger.getDefaultStats();
 		}
 		return null; //TODO Exception
 	}
@@ -36,8 +36,8 @@ public class HeroBuilder {
 		switch (heroClass) {
 			case "Warrior":
 				return createWarrior(heroName);
-			case "Rogue":
-				return createRogue(heroName);
+			case "Ranger":
+				return createRanger(heroName);
 		}
 		return null; //TODO Exception
 	}
@@ -51,8 +51,8 @@ public class HeroBuilder {
 		return warrior;
 	}
 
-	public Rogue createRogue(String name) {
-		Rogue rogue = new Rogue(name);
-		return rogue;
+	public Ranger createRanger(String name) {
+		Ranger ranger = new Ranger(name);
+		return ranger;
 	}
 }

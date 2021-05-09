@@ -20,6 +20,6 @@ public class HeroStorage {
 
 	public void download() {
 //		heroClasses.put(Warrior.class.getSimpleName(), Warrior.getDefaultStats());
-//		heroClasses.put(Rogue.class.getSimpleName(), Rogue.getDefaultStats());
+//		heroClasses.put(Ranger.class.getSimpleName(), Ranger.getDefaultStats());
 	}
 }

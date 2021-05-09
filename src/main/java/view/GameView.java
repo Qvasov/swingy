@@ -1,13 +1,10 @@
 package view;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import controller.GameController;
 import lombok.Getter;
 import lombok.Setter;
-import view.GUI.GraphicView;
-import view.GUI.HeroPickGuiView;
-import view.console.ConsoleView;
-import view.console.HeroPickConsoleView;
+import view.GUI.GraphicUI;
+import view.console.ConsoleUI;
 
 public class GameView {
 	public static final int CONSOLE = 0;
@@ -16,36 +13,26 @@ public class GameView {
 	@Setter
 	private GameController controller;
 	@Getter
-//	private GraphicView graphicView;
-//	private ConsoleView consoleView;
 	private View view;
 
-
-	//TODO Продвмать интерфейсы
 	public GameView(int mode) {
 		this.mode = mode;
+		switch (mode) {
+			case GUI:
+				view = new GraphicUI();
+				break;
+			case CONSOLE:
+				view = new ConsoleUI();
+				break;
+		}
 	}
 
 	public void heroPick() {
-		switch (mode) {
-			case GUI:
-				new HeroPickGuiView(controller);
-				break;
-			case CONSOLE:
-				new HeroPickConsoleView(controller);
-				break;
-		}
+		view.heroPick(controller);
 	}
 
 	public void newGameMap() {
-		switch (mode) {
-			case GUI:
-				this.view = new GraphicView(controller);
-				break;
-			case CONSOLE:
-				this.view = new ConsoleView(controller);
-				break;
-		}
+		view.newGameMap(controller);
 	}
 
 	public void updateView() {

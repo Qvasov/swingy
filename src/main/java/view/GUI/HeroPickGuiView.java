@@ -39,9 +39,9 @@ public class HeroPickGuiView extends JFrame {
 
 	private void initGUI() {
 		setTitle("Hero pick");
-		int size = 300;
+		int size = 320;
 		setSize(size, size);
-		setPreferredSize(new Dimension(size, size - 80));
+		setPreferredSize(new Dimension(size, size - 100));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -90,7 +90,7 @@ public class HeroPickGuiView extends JFrame {
 						Map<String, Integer> stats = HeroBuilder.getInstance().getStats(String.valueOf(heroClass.getSelectedItem()));
 						level.setText(stats.get("level").toString());
 						exp.setText(stats.get("experience").toString());
-						attack.setText(stats.get("attack").toString());
+						attack.setText(stats.get("minAttack").toString() + " - " + stats.get("maxAttack").toString());
 						defence.setText(stats.get("defence").toString());
 						hp.setText(stats.get("hp").toString());
 					}
@@ -120,7 +120,7 @@ public class HeroPickGuiView extends JFrame {
 //					controller.startGame(HeroBuilder.getInstance().loadHero(
 //							String.valueOf(heroNameCb.getSelectedItem())));
 				}
-				setVisible(false);
+				dispose();
 			}
 		});
 

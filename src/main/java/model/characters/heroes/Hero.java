@@ -20,8 +20,8 @@ public abstract class Hero extends Unit {
 	@Setter
 	private Weapon weapon;
 
-	protected Hero(String name, int attack, int defence, int hp) {
-		super(name, attack, defence, hp);
+	protected Hero(String name, int minAttack, int maxAttack, int defence, int hp) {
+		super(name, minAttack, maxAttack, defence, hp);
 		setExpToNextLvl();
 	}
 
@@ -45,7 +45,7 @@ public abstract class Hero extends Unit {
 
 	@Override
 	public int dealDamage() {
-		return getAttack() + ((weapon != null) ? weapon.getAttack() : 0);
+		return super.dealDamage() + ((weapon != null) ? weapon.getAttack() : 0);
 	}
 
 	@Override

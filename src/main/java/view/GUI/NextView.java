@@ -7,14 +7,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameOverView extends JDialog {
+public class NextView extends JDialog {
 	private GameController controller;
 	private JFrame parent;
-	private JButton exit = new JButton("Exit");
 	private JButton next = new JButton("Next Level");
-	private JLabel message = new JLabel("Game Over");
+	private JButton cancel = new JButton("Cancel");
+	private JButton exit = new JButton("Exit");
+	private JLabel message = new JLabel("Go to the next level?");
 
-	public GameOverView(GameController controller, JFrame parent) {
+	public NextView(GameController controller, JFrame parent) {
 		this.controller = controller;
 		this.parent = parent;
 		parent.setEnabled(false);
@@ -31,28 +32,28 @@ public class GameOverView extends JDialog {
 
 		initLayout();
 
-		if (controller.getModel().getHero().isDead()) {
-			next.setEnabled(false);
-			next.setVisible(false);
-			exit.setText("OK");
-			setSize(88, 0);
-			setLocationRelativeTo(parent);
-		}
-
 		next.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				parent.dispose();
+				dispose();
 				controller.startGame(controller.getModel().getHero());
 			}
 		});
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				parent.dispose();
+				dispose();
 				controller.launchGame();
+			}
+		});
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.setEnabled(true);
+				dispose();
+				controller.ok();
 			}
 		});
 
@@ -65,13 +66,14 @@ public class GameOverView extends JDialog {
 		GroupLayout gl = new GroupLayout(pane);
 		pane.setLayout(gl);
 
-		gl.linkSize(exit, next);
+		gl.linkSize(next, cancel, exit);
 		gl.setAutoCreateGaps(true);
 		gl.setAutoCreateContainerGaps(true);
 		gl.setHorizontalGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
 				.addComponent(message)
 				.addGroup(gl.createSequentialGroup()
 						.addComponent(next)
+						.addComponent(cancel)
 						.addComponent(exit)
 				)
 		);
@@ -79,6 +81,7 @@ public class GameOverView extends JDialog {
 				.addComponent(message)
 				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
 						.addComponent(next)
+						.addComponent(cancel)
 						.addComponent(exit)
 				)
 		);

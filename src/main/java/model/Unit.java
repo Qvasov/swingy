@@ -3,22 +3,26 @@ package model;
 import lombok.Getter;
 
 import javax.swing.*;
+import java.util.Random;
 
 @Getter
 public abstract class Unit {
+	private static Random random = new Random();
 	private Point position;
 	private String name;
-	private int attack;
+	private int minAttack;
+	private int maxAttack;
 	private int defence;
 	private int curHp;
 	private int hp;
 	private Icon icon;
 
 	//TODO воткнуть NOT NULL
-	protected Unit(String name, int attack, int defence, int hp) {
+	protected Unit(String name, int minAttack, int maxAttack, int defence, int hp) {
 		this.position = new Point();
 		this.name = name;
-		this.attack = attack;
+		this.minAttack = minAttack;
+		this.maxAttack = maxAttack;
 		this.defence = defence;
 		this.hp = hp;
 		this.curHp = this.hp;
@@ -26,7 +30,7 @@ public abstract class Unit {
 	}
 
 	public int dealDamage() {
-		return getAttack();
+		return getMinAttack() + random.nextInt(getMaxAttack() - getMinAttack());
 	}
 
 	public int receiveDamage(int damage) {
@@ -47,7 +51,8 @@ public abstract class Unit {
 	}
 
 	public void increaseStats (int addAttack, int addDefence, int addHp) {
-		this.attack += addAttack;
+		this.minAttack += addAttack;
+		this.maxAttack += addAttack;
 		this.defence += addDefence;
 		this.hp += addHp;
 	}

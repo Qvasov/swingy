@@ -33,7 +33,11 @@ public class Map {
 		Enemy enemy;
 
 		for (int i = 0; i < enemiesCount; i++) {
-			enemy = EnemyBuilder.getInstance().createBandit(level);
+			if (random.nextInt(10) < 2) {
+				enemy = EnemyBuilder.getInstance().createWarlock(level);
+			} else {
+				enemy = EnemyBuilder.getInstance().createBandit(level);
+			}
 			putEnemyOnMap(enemy);
 		}
 	}

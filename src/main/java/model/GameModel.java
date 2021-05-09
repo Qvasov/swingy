@@ -54,7 +54,7 @@ public class GameModel {
 		destX += srcX;
 		destY += srcY;
 		if (destY < 0 || destY > map.getSize() - 1 || destX < 0 || destX > map.getSize() - 1) {
-			state = State.GAME_OVER;
+			state = State.NEXT;
 		} else {
 			enemy = (Enemy) map.getUnits()[destX].put(destY, map.getUnits()[srcX].remove(srcY));
 			hero.getPosition().setX(destX);
@@ -78,6 +78,7 @@ public class GameModel {
 
 	public void fight() {
 		battleLog = "";
+		state = State.FIGHT_LOG;
 		while (true) {
 			attack(this.hero, this.enemy);
 			if (enemy.isDead()) {
@@ -86,22 +87,23 @@ public class GameModel {
 				hero.recoveryHp(hero.getFullHp());
 				item = ItemFactory.getInstance().generateItem(enemy);
 				enemy = null;
-				state = State.FIGHT_LOG;
 				return;
 			}
 			attack(this.enemy, this.hero);
 			if (hero.isDead()) {
 				battleLog += String.format("%s has died!\n It's Game Over", this.hero.getName());
 				map.getUnits()[enemy.getPosition().getX()].put(enemy.getPosition().getY(), enemy);
-				state = State.GAME_OVER;
 				return;
 			}
 		}
 	}
 
 	private void attack(Unit attacker, Unit defender) {
+		int defenderHp = defender.getCurHp();
+		int attackerHp = attacker.getCurHp();
 		int damage = defender.receiveDamage(attacker.dealDamage());
-		battleLog += String.format("%s deals %d damage to %s\n", attacker.getName(), damage, defender.getName());
+		battleLog += String.format("%s(%d hp) deals %d damage to %s(%d hp)\n",
+				attacker.getName(), attackerHp, damage, defender.getName() ,defenderHp);
 	}
 
 	public void equipItem() {

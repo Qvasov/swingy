@@ -1,85 +1,38 @@
 package view.console;
 
-import controller.GameController;
+import lombok.Getter;
+import lombok.Setter;
 import model.characters.heroes.HeroBuilder;
 
 import java.util.Map;
-import java.util.Scanner;
 
-import static view.console.Menu.*;
+import static view.console.MenuState.*;
 
+@Getter
 public class HeroPickConsoleView {
-	private final GameController controller;
-	private final Scanner scanner = new Scanner(System.in);
-	private String input;
+	@Setter
 	private String heroName;
+	@Setter
 	private String heroClass;
-	private Menu menu = MAIN;
+	private MenuState state;
 
-	public HeroPickConsoleView(GameController controller) {
-		this.controller = controller;
+	public HeroPickConsoleView() {
 		this.heroName = "";
 		this.heroClass = "";
 		mainMenu();
-		while (scanner.hasNext()) {
-			input = scanner.next();
-			switch (menu) {
-				case MAIN:
-					if (input.equals("1")) {
-						heroName = "";
-						heroClass = "";
-						create();
-					} else if (input.equals("2")) {
-						load();
-					} else if (input.equals("3")) {
-						System.exit(0);
-					}
-					break;
-				case CREATE:
-					if (input.equals("1")) {
-						name();
-					} else if (input.equals("2")) {
-						chooseClass();
-					} else if (input.equals("3")) {
-						if (!heroClass.isEmpty() && !heroName.isEmpty()) {
-							controller.startGame(HeroBuilder.getInstance().createHero(heroClass, heroName));
-						} else {
-							create();
-						}
-					} else if (input.equals("4")) {
-						mainMenu();
-					}
-					break;
-				case NAME:
-					//TODO ограничение на символы
-					if (input.matches("[a-zA-Z]*")) {
-						heroName = input;
-					}
-					create();
-					break;
-				case CLASS:
-					if (input.equals("1")) {
-						heroClass = "Warrior";
-					} else if (input.equals("2")) {
-						heroClass = "Rogue";
-					}
-					create();
-					break;
-			}
-		}
 	}
 
-	private void mainMenu() {
+	protected void mainMenu() {
 		System.out.println("---------------------\n" +
 				"|     Hero Pick     |\n" +
 				"---------------------");
 		System.out.println("1. Create Hero\n" +
 				"2. Load Hero\n" +
 				"3. Exit");
-		menu = MAIN;
+		state = MAIN;
 	}
 
-	private void create() {
+	protected void create() {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
 				"---------------------");
@@ -104,22 +57,22 @@ public class HeroPickConsoleView {
 				"2. Choose Class\n" +
 				"3. Start\n" +
 				"4. Back");
-		menu = CREATE;
+		state = CREATE;
 	}
 
-	private void load() {
-		menu = LOAD;
+	protected void load() {
+		state = LOAD;
 	}
 
-	private void name() {
+	protected void name() {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
 				"---------------------\n" +
 				"Enter Name...");
-		menu = NAME;
+		state = NAME;
 	}
 
-	private void chooseClass() {
+	protected void chooseClass() {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
 				"---------------------");
@@ -128,6 +81,6 @@ public class HeroPickConsoleView {
 			System.out.println(i + ". " + hero);
 			i++;
 		}
-		menu = CLASS;
+		state = CLASS;
 	}
 }

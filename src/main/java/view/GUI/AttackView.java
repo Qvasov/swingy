@@ -2,7 +2,6 @@ package view.GUI;
 
 import controller.GameController;
 import model.characters.enemies.Enemy;
-import view.GameView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AttackView extends JDialog {
-	private GameController controller;
-	private JFrame parent;
-	private JButton fight = new JButton("Fight");
-	private JButton run = new JButton("Run");
-	private JLabel enemyIcon = new JLabel();
-	private JPanel enemyStats = new JPanel();
+	private final GameController controller;
+	private final JFrame parent;
+	private final JButton fight = new JButton("Fight");
+	private final JButton run = new JButton("Run");
+	private final JLabel enemyIcon = new JLabel();
+	private final JPanel enemyStats = new JPanel();
 
 	public AttackView(GameController controller, JFrame parent) {
 		this.controller = controller;
@@ -42,18 +41,18 @@ public class AttackView extends JDialog {
 		fight.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.fight();
-				dispose();
 				parent.setEnabled(true);
+				dispose();
+				controller.fight();
 			}
 		});
 
 		run.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.run();
-				dispose();
 				parent.setEnabled(true);
+				dispose();
+				controller.run();
 			}
 		});
 
@@ -67,10 +66,12 @@ public class AttackView extends JDialog {
 		enemyStats.setLayout(gl);
 		enemyStats.add(new JLabel("Name: "));
 		enemyStats.add(new JLabel(enemy.getName()));
+		enemyStats.add(new JLabel("Exp: "));
+		enemyStats.add(new JLabel(String.valueOf(enemy.getExp())));
 		enemyStats.add(new JLabel("HP: "));
 		enemyStats.add(new JLabel(String.valueOf(enemy.getHp())));
 		enemyStats.add(new JLabel("Attack: "));
-		enemyStats.add(new JLabel(String.valueOf(enemy.getAttack())));
+		enemyStats.add(new JLabel(enemy.getMinAttack() + " - " + enemy.getMaxAttack()));
 		enemyStats.add(new JLabel("Defence: "));
 		enemyStats.add(new JLabel(String.valueOf(enemy.getDefence())));
 	}

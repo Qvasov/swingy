@@ -11,18 +11,19 @@ public class Warrior extends Hero {
 	{{
 		put("level", 0);
 		put("experience", 0);
-		put("attack", 35);
-		put("defence", 20);
+		put("minAttack", 22);
+		put("maxAttack", 25);
+		put("defence", 8);
 		put("hp", 100);
 	}};
 
 	public Warrior(String name) {
-		super(name, defaultStats.get("attack"), defaultStats.get("defence") , defaultStats.get("hp"));
+		super(name, defaultStats.get("minAttack"), defaultStats.get("maxAttack"), defaultStats.get("defence") , defaultStats.get("hp"));
 	}
 
 	@Override
 	public void levelUp() {
 		this.level++;
-		increaseStats(2, 2, 10);
+		increaseStats(2, 2, 5);
 	}
 }

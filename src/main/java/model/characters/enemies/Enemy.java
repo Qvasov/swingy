@@ -7,13 +7,8 @@ import model.Unit;
 public abstract class Enemy extends Unit {
 	private int exp;
 
-	protected Enemy(String name, int attack, int defence, int hp, int exp) {
-		super(name, attack, defence, hp);
+	protected Enemy(String name, int minAttack, int maxAttack, int defence, int hp, int exp) {
+		super(name, minAttack, maxAttack, defence, hp);
 		this.exp = exp;
-	}
-
-	@Override
-	public String getSymbol() {
-		return "E";
 	}
 }

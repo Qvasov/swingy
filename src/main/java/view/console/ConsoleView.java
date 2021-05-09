@@ -2,71 +2,15 @@ package view.console;
 
 import controller.GameController;
 import model.Map;
-import view.View;
 
-import java.util.Scanner;
-
-public class ConsoleView implements View {
+public class ConsoleView {
 	private final GameController controller;
-	private Scanner scanner = new Scanner(System.in);
-	private String input;
 
 	public ConsoleView(GameController controller) {
 		this.controller = controller;
 		updateView();
-		while (scanner.hasNext()) {
-			input = scanner.next();
-			switch (controller.getModel().getState()) {
-				case MOVEMENT:
-					if (input.equalsIgnoreCase("N") || input.equalsIgnoreCase("U")) {
-						controller.getModel().moveUp();
-					} else if (input.equalsIgnoreCase("S") || input.equalsIgnoreCase("D")) {
-						controller.getModel().moveDown();
-					} else if (input.equalsIgnoreCase("W") || input.equalsIgnoreCase("L")) {
-						controller.getModel().moveLeft();
-					} else if (input.equalsIgnoreCase("E") || input.equalsIgnoreCase("R")) {
-						controller.getModel().moveRight();
-					}
-					updateView();
-					break;
-				case ATTACK: {
-					if (input.equals("1")) {
-						controller.fight();
-					} else if (input.equals("2")) {
-						controller.run();
-					}
-					updateView();
-					break;
-				}
-				case FIGHT_LOG: {
-					if (controller.getModel().getItem() != null) {
-						if (input.equals("1")) {
-							controller.equipItem();
-						} else if (input.equals("2")) {
-							controller.ok();
-						}
-					} else {
-						if (input.equals("1")) {
-							controller.ok();
-						}
-					}
-					updateView();
-					break;
-				}
-				case GAME_OVER: {
-					if (input.equals("1")) {
-						controller.startGame(controller.getModel().getHero());
-					} else if (input.equals("2")) {
-						controller.launchGame();
-					}
-					updateView();
-					break;
-				}
-			}
-		}
 	}
 
-	@Override
 	public void updateView() {
 		Map map = controller.getModel().getMap();
 		StringBuilder result = new StringBuilder("");
@@ -94,13 +38,13 @@ public class ConsoleView implements View {
 			case FIGHT_LOG:
 				fightResult();
 				break;
-			case GAME_OVER:
+			case NEXT:
 				gameOver();
 				break;
 		}
 	}
 
-	public void attack() {
+	protected void attack() {
 		System.out.print("--------------------\n" +
 				"|      BATTLE      |\n" +
 				"--------------------\n" +
@@ -112,7 +56,7 @@ public class ConsoleView implements View {
 				"2. Run (50% chance to avoid the fight)\n");
 	}
 
-	public void fightResult() {
+	protected void fightResult() {
 		StringBuilder result = new StringBuilder();
 		result.append("--------------------\n")
 				.append("|      BATTLE      |\n")
@@ -129,7 +73,7 @@ public class ConsoleView implements View {
 		System.out.print(result);
 	}
 
-	public void gameOver() {
+	protected void gameOver() {
 		System.out.print("---------------------\n" +
 				"|     GAME OVER     |\n" +
 				"---------------------\n" +

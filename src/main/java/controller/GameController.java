@@ -94,6 +94,6 @@ public class GameController implements KeyListener {
 
 		//Обработка флагов
 
-		new GameController(new GameModel(), new GameView(GameView.CONSOLE)).launchGame();
+		new GameController(new GameModel(), new GameView(GameView.GUI)).launchGame();
 	}
 }
