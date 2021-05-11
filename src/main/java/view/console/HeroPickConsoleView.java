@@ -17,14 +17,12 @@ public class HeroPickConsoleView {
 	private MenuState state;
 
 	public HeroPickConsoleView() {
-		this.heroName = "";
-		this.heroClass = "";
 		mainMenu();
 	}
 
 	protected void mainMenu() {
 		System.out.println("---------------------\n" +
-				"|     Hero Pick     |\n" +
+				"|     Main menu     |\n" +
 				"---------------------");
 		System.out.println("1. Create Hero\n" +
 				"2. Load Hero\n" +
@@ -36,22 +34,23 @@ public class HeroPickConsoleView {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
 				"---------------------");
-		if (heroName.isEmpty()) {
-			System.out.println("You need enter Name of your Hero");
+		if (heroName == null) {
+			System.out.print("Name:\tYou need enter Name of your Hero\n");
 		} else {
-			System.out.println("Name: " + heroName);
+			System.out.printf("Name:\t%s\n", heroName);
 		}
-		if (heroClass.isEmpty()) {
-			System.out.println("You need to choose Class");
+		if (heroClass == null) {
+			System.out.print("Stats:\tYou need to choose Class\n");
 		} else {
 			Map<String, Integer> stats = HeroBuilder.getInstance().getStats(heroClass);
-			System.out.println("Class: " + heroClass);
-			System.out.printf("Level: %s\n" +
-							"Experience: %s\n" +
-							"Attack: %s\n" +
-							"Defence: %s\n" +
-							"Hit points: %s\n",
-					stats.get("level"), stats.get("experience"), stats.get("attack"), stats.get("defence"), stats.get("hp"));
+			System.out.printf("Stats:\tClass: %s\n", heroClass);
+			System.out.printf("\t\tLevel: %s\n" +
+							"\t\tExperience: %s\n" +
+							"\t\tAttack: %s - %s\n" +
+							"\t\tDefence: %s\n" +
+							"\t\tHit points: %s\n",
+					stats.get("level"), stats.get("experience"), stats.get("minAttack"),
+					stats.get("maxAttack"), stats.get("defence"), stats.get("hp"));
 		}
 		System.out.println("1. Enter Name\n" +
 				"2. Choose Class\n" +
@@ -68,6 +67,7 @@ public class HeroPickConsoleView {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
 				"---------------------\n" +
+				"Name must be not null and its length must be from 1 to 20 symbols\n" +
 				"Enter Name...");
 		state = NAME;
 	}
@@ -75,7 +75,8 @@ public class HeroPickConsoleView {
 	protected void chooseClass() {
 		System.out.println("---------------------\n" +
 				"|    Create Hero    |\n" +
-				"---------------------");
+				"---------------------\n" +
+				"Choose class number or enter something to go back");
 		int i = 1;
 		for (String hero : HeroBuilder.getInstance().getHeroes()) {
 			System.out.println(i + ". " + hero);

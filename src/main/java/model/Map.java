@@ -33,7 +33,7 @@ public class Map {
 		Enemy enemy;
 
 		for (int i = 0; i < enemiesCount; i++) {
-			if (random.nextInt(10) < 2) {
+			if (level > 0 && random.nextInt(10) < 2) {
 				enemy = EnemyBuilder.getInstance().createWarlock(level);
 			} else {
 				enemy = EnemyBuilder.getInstance().createBandit(level);

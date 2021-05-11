@@ -8,9 +8,12 @@ import model.characters.heroes.Hero;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class GraphicView extends JFrame {
 	private final GameController controller;
+	private final JFrame cur;
 	private JPanel heroInfo;
 	private JScrollPane scrollPane;
 	private JPanel scrollContent;
@@ -25,6 +28,7 @@ public class GraphicView extends JFrame {
 
 	public GraphicView(GameController controller) {
 		this.controller = controller;
+		this.cur = this;
 		this.mapSize = controller.getModel().getMap().getSize();
 		this.mapIcons = new JLabel[mapSize][mapSize];
 		for (int x = 0; x < mapSize; x++) {
@@ -102,7 +106,7 @@ public class GraphicView extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		int sideSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
+		final int sideSize = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2 + 15;
 		setSize(sideSize, sideSize);
 		setMaximumSize(new Dimension(sideSize, sideSize));
 		setPreferredSize(new Dimension(sideSize, sideSize));
@@ -124,6 +128,24 @@ public class GraphicView extends JFrame {
 				.addComponent(scrollPane));
 
 		addKeyListener(controller);
+		addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					new ExitView(cur, controller);
+				}
+			}
+		});
 	}
 
 	private void initHeroInfo() {

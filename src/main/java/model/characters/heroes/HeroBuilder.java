@@ -29,17 +29,20 @@ public class HeroBuilder {
 			case "Ranger":
 				return Ranger.getDefaultStats();
 		}
-		return null; //TODO Exception
+		return null;
 	}
 
 	public Hero createHero(String heroClass, String heroName) {
+		if (heroClass == null) {
+			throw new IllegalArgumentException("Unknown hero class");
+		}
 		switch (heroClass) {
 			case "Warrior":
 				return createWarrior(heroName);
 			case "Ranger":
 				return createRanger(heroName);
 		}
-		return null; //TODO Exception
+		throw new IllegalArgumentException("Unknown hero class");
 	}
 
 	public void loadHero(String heroName) {
@@ -47,12 +50,10 @@ public class HeroBuilder {
 	}
 
 	public Warrior createWarrior(String name) {
-		Warrior warrior = new Warrior(name);
-		return warrior;
+		return new Warrior(name);
 	}
 
 	public Ranger createRanger(String name) {
-		Ranger ranger = new Ranger(name);
-		return ranger;
+		return new Ranger(name);
 	}
 }

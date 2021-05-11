@@ -27,12 +27,8 @@ public class FightResultView extends JDialog {
 	private void initUI() {
 		setTitle("Result");
 		setResizable(false);
-		setSize(214, 160);
-		setLocationRelativeTo(parent);
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-		initLayout();
 
 		log.setEditable(false);
 		log.setRows(8);
@@ -82,7 +78,9 @@ public class FightResultView extends JDialog {
 			});
 		}
 
+		initLayout();
 		pack();
+		setLocationRelativeTo(parent);
 		setVisible(true);
 	}
 

@@ -19,8 +19,8 @@ public class ConsoleUI implements View {
 			switch (heroPickConsoleView.getState()) {
 				case MAIN:
 					if (input.equals("1")) {
-						heroPickConsoleView.setHeroName("");
-						heroPickConsoleView.setHeroClass("");
+						heroPickConsoleView.setHeroName(null);
+						heroPickConsoleView.setHeroClass(null);
 						heroPickConsoleView.create();
 					} else if (input.equals("2")) {
 						heroPickConsoleView.load();
@@ -34,19 +34,18 @@ public class ConsoleUI implements View {
 					} else if (input.equals("2")) {
 						heroPickConsoleView.chooseClass();
 					} else if (input.equals("3")) {
-						if (!heroPickConsoleView.getHeroClass().isEmpty() && !heroPickConsoleView.getHeroName().isEmpty()) {
+						try {
 							controller.startGame(HeroBuilder.getInstance().createHero(
 									heroPickConsoleView.getHeroClass(), heroPickConsoleView.getHeroName()));
+						} catch (IllegalArgumentException exception) {
+							error(exception.getMessage());
 						}
 					} else if (input.equals("4")) {
 						heroPickConsoleView.mainMenu();
 					}
 					break;
 				case NAME:
-					//TODO ограничение на символы
-					if (input.matches("[a-zA-Z]*")) {
-						heroPickConsoleView.setHeroName(input);
-					}
+					heroPickConsoleView.setHeroName(input);
 					heroPickConsoleView.create();
 					break;
 				case CLASS:
@@ -95,6 +94,10 @@ public class ConsoleUI implements View {
 						} else if (input.equals("2")) {
 							controller.ok();
 						}
+					} else if (controller.getModel().getHero().isDead()) {
+						if (input.equals("1")) {
+							controller.launchGame();
+						}
 					} else {
 						if (input.equals("1")) {
 							controller.ok();
@@ -107,6 +110,8 @@ public class ConsoleUI implements View {
 					if (input.equals("1")) {
 						controller.startGame(controller.getModel().getHero());
 					} else if (input.equals("2")) {
+						controller.ok();
+					} else if (input.equals("3")) {
 						controller.launchGame();
 					}
 					updateView();
@@ -119,5 +124,10 @@ public class ConsoleUI implements View {
 	@Override
 	public void updateView() {
 		consoleView.updateView();
+	}
+
+	@Override
+	public void error(String message) {
+		System.err.println("ERROR: " + message);
 	}
 }

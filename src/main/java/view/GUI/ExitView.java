@@ -4,47 +4,43 @@ import controller.GameController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class NextView extends JDialog {
+public class ExitView extends JDialog {
 	private GameController controller;
 	private JFrame parent;
-	private JButton next = new JButton("Next Level");
+	private JLabel message = new JLabel("Save before leaving?");
+	private JButton yes = new JButton("Yes");
+	private JButton no = new JButton("Don't save");
 	private JButton cancel = new JButton("Cancel");
-	private JButton exit = new JButton("Exit");
-	private JLabel message = new JLabel("Do you want leave this level?");
 
-	public NextView(GameController controller, JFrame parent) {
+	public ExitView(JFrame parent, GameController controller) {
 		this.controller = controller;
 		this.parent = parent;
+
 		parent.setEnabled(false);
 		initUI();
 	}
 
-	private void initUI() {
-		setTitle("Level complete");
+	public void initUI() {
+		setTitle("Exit to main menu");
 		setResizable(false);
-		setUndecorated(true);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		initLayout();
+		pack();
+		setLocationRelativeTo(parent);
+		setVisible(true);
 
-		next.addActionListener(new ActionListener() {
+		yes.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				controller.saveHeroes();
 				parent.dispose();
 				dispose();
-				controller.startGame(controller.getModel().getHero());
+				controller.launchGame();
 			}
 		});
-		cancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				parent.setEnabled(true);
-				dispose();
-				controller.ok();
-			}
-		});
-		exit.addActionListener(new ActionListener() {
+
+		no.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				parent.dispose();
@@ -53,10 +49,21 @@ public class NextView extends JDialog {
 			}
 		});
 
-		initLayout();
-		pack();
-		setLocationRelativeTo(parent);
-		setVisible(true);
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.setEnabled(true);
+				dispose();
+			}
+		});
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				parent.setEnabled(true);
+				dispose();
+			}
+		});
 	}
 
 	private void initLayout() {
@@ -64,23 +71,24 @@ public class NextView extends JDialog {
 		GroupLayout gl = new GroupLayout(pane);
 		pane.setLayout(gl);
 
-		gl.linkSize(next, cancel, exit);
+		gl.linkSize(yes, no, cancel);
 		gl.setAutoCreateGaps(true);
 		gl.setAutoCreateContainerGaps(true);
 		gl.setHorizontalGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
 				.addComponent(message)
 				.addGroup(gl.createSequentialGroup()
-						.addComponent(next)
+						.addComponent(yes)
+						.addComponent(no)
 						.addComponent(cancel)
-						.addComponent(exit)
 				)
+
 		);
 		gl.setVerticalGroup(gl.createSequentialGroup()
 				.addComponent(message)
 				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(next)
+						.addComponent(yes)
+						.addComponent(no)
 						.addComponent(cancel)
-						.addComponent(exit)
 				)
 		);
 	}

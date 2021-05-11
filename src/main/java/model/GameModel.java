@@ -91,7 +91,7 @@ public class GameModel {
 			}
 			attack(this.enemy, this.hero);
 			if (hero.isDead()) {
-				battleLog += String.format("%s has died!\n It's Game Over", this.hero.getName());
+				battleLog += String.format("%s has died!\nIt's Game Over\n", this.hero.getName());
 				map.getUnits()[enemy.getPosition().getX()].put(enemy.getPosition().getY(), enemy);
 				return;
 			}

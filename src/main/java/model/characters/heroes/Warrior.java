@@ -18,7 +18,8 @@ public class Warrior extends Hero {
 	}};
 
 	public Warrior(String name) {
-		super(name, defaultStats.get("minAttack"), defaultStats.get("maxAttack"), defaultStats.get("defence") , defaultStats.get("hp"));
+		super(defaultStats.get("level"), defaultStats.get("experience"), name, defaultStats.get("minAttack"),
+				defaultStats.get("maxAttack"), defaultStats.get("defence") , defaultStats.get("hp"));
 	}
 
 	@Override

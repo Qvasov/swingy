@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class HeroPickGuiView extends JFrame {
 	private GameController controller;
+	private JFrame cur;
 	private JRadioButton create = new JRadioButton("Create Hero", true);
 	private JRadioButton load = new JRadioButton("Load Hero", false);
 	private ButtonGroup buttonGroup = new ButtonGroup();
@@ -34,11 +35,12 @@ public class HeroPickGuiView extends JFrame {
 
 	public HeroPickGuiView(GameController controller) {
 		this.controller = controller;
+		this.cur = this;
 		initGUI();
 	}
 
 	private void initGUI() {
-		setTitle("Hero pick");
+		setTitle("Main menu");
 		int size = 320;
 		setSize(size, size);
 		setPreferredSize(new Dimension(size, size - 100));
@@ -113,14 +115,17 @@ public class HeroPickGuiView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (create.isSelected()) {
-					controller.startGame(HeroBuilder.getInstance().createHero(
-							String.valueOf(heroClass.getSelectedItem()),
-							String.valueOf(heroName.getSelectedItem())));
+					try {
+						controller.startGame(HeroBuilder.getInstance().createHero(
+								(String) heroClass.getSelectedItem(),
+								(String) heroName.getSelectedItem()));
+					} catch (IllegalArgumentException exception) {
+						new ErrorView(exception.getMessage(), cur);
+					}
 				} else if (load.isSelected()) {
 //					controller.startGame(HeroBuilder.getInstance().loadHero(
 //							String.valueOf(heroNameCb.getSelectedItem())));
 				}
-				dispose();
 			}
 		});
 
@@ -204,12 +209,12 @@ public class HeroPickGuiView extends JFrame {
 				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(gl.createSequentialGroup()
 								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(nameLabel)
-										.addComponent(heroName)
-								)
-								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(classLabel)
 										.addComponent(heroClass)
+								)
+								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(nameLabel)
+										.addComponent(heroName)
 								)
 								.addComponent(start)
 								.addComponent(exit)

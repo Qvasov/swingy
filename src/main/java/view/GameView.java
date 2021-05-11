@@ -38,4 +38,8 @@ public class GameView {
 	public void updateView() {
 		view.updateView();
 	}
+
+	public void error(String message) {
+		view.error(message);
+	}
 }

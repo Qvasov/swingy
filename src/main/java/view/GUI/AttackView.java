@@ -26,8 +26,6 @@ public class AttackView extends JDialog {
 	private void initUI() {
 		setTitle("Battle");
 		setResizable(false);
-		setSize(160, 100);
-		setLocationRelativeTo(parent);
 		setUndecorated(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -35,8 +33,6 @@ public class AttackView extends JDialog {
 		initEnemyStats();
 		fight.setToolTipText("Fight");
 		run.setToolTipText("50% chance to avoid the fight");
-
-		initLayout();
 
 		fight.addActionListener(new ActionListener() {
 			@Override
@@ -56,7 +52,9 @@ public class AttackView extends JDialog {
 			}
 		});
 
+		initLayout();
 		pack();
+		setLocationRelativeTo(parent);
 		setVisible(true);
 	}
 
