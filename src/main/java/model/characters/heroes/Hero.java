@@ -23,7 +23,7 @@ public abstract class Hero extends Unit {
 	@Setter
 	private Weapon weapon;
 
-	protected Hero(int level, int exp, String name, int minAttack, int maxAttack, int defence, int hp) {
+	protected Hero(String name, int level, int exp, int minAttack, int maxAttack, int defence, int hp) {
 		super(name, minAttack, maxAttack, defence, hp);
 		this.level = level;
 		this.exp = exp;

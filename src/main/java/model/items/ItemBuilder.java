@@ -3,18 +3,19 @@ package model.items;
 import lombok.Getter;
 import model.characters.enemies.Enemy;
 import model.items.abstarct.Item;
+import model.items.abstarct.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ItemFactory {
-	private static ItemFactory itemFactory = new ItemFactory();
+public class ItemBuilder {
+	private static ItemBuilder itemBuilder = new ItemBuilder();
 	private Random random = new Random();
 	@Getter
 	private List<String> items = new ArrayList<>();
 
-	private ItemFactory() {
+	private ItemBuilder() {
 		items.add("Sword");
 		items.add("Plate");
 		items.add("Bow");
@@ -22,8 +23,8 @@ public class ItemFactory {
 		items.add("Light");
 	}
 
-	public static ItemFactory getInstance() {
-		return itemFactory;
+	public static ItemBuilder getInstance() {
+		return itemBuilder;
 	}
 
 	public Item generateItem(Enemy enemy) {
@@ -61,5 +62,22 @@ public class ItemFactory {
 			}
 		}
 		return item;
+	}
+
+	public Item createItem(String itemName, int itemStat) {
+		switch (itemName) {
+			case "Sword":
+				return new Sword(itemStat);
+			case "Bow":
+				return new Bow(itemStat);
+			case "Plate":
+				return new Plate(itemStat);
+			case "Mail":
+				return new Mail(itemStat);
+			case "Light":
+				return new Light(itemStat);
+			default:
+				return null;
+		}
 	}
 }

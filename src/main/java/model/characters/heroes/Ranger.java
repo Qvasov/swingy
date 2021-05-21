@@ -18,8 +18,12 @@ public class Ranger extends Hero {
 	}};
 
 	public Ranger(String name) {
-		super(defaultStats.get("level"), defaultStats.get("experience"), name, defaultStats.get("minAttack"),
+		super(name, defaultStats.get("level"), defaultStats.get("experience"), defaultStats.get("minAttack"),
 				defaultStats.get("maxAttack"), defaultStats.get("defence") , defaultStats.get("hp"));
+	}
+
+	public Ranger(String name, int level, int exp, int minAttack, int maxAttack, int defence, int hp) {
+		super(name, level, exp, minAttack, maxAttack, defence, hp);
 	}
 
 	@Override

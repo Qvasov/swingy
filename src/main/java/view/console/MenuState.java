@@ -5,5 +5,6 @@ public enum MenuState {
 	CREATE,
 	LOAD,
 	NAME,
-	CLASS
+	CLASS,
+	HERO
 }

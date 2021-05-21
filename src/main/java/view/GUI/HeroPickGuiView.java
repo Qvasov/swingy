@@ -10,28 +10,30 @@ import java.awt.event.*;
 import java.util.Map;
 
 public class HeroPickGuiView extends JFrame {
-	private GameController controller;
-	private JFrame cur;
-	private JRadioButton create = new JRadioButton("Create Hero", true);
-	private JRadioButton load = new JRadioButton("Load Hero", false);
-	private ButtonGroup buttonGroup = new ButtonGroup();
-	private JLabel classLabel = new JLabel("Class:");
-	private JComboBox<String> heroClass = new JComboBox<>();
-	private JLabel nameLabel = new JLabel("Name:");
-	private JComboBox<String> heroName = new JComboBox<>();
-	private JLabel stats = new JLabel("Stats");
-	private JLabel levelLbl = new JLabel("Level:");
-	private JLabel expLbl = new JLabel("Experience:");
-	private JLabel attackLbl = new JLabel("Attack:");
-	private JLabel defenceLbl = new JLabel("Defence:");
-	private JLabel hpLbl = new JLabel("Hit points:");
-	private JLabel level = new JLabel();
-	private JLabel exp = new JLabel();
-	private JLabel attack = new JLabel();
-	private JLabel defence = new JLabel();
-	private JLabel hp = new JLabel();
-	private JButton start = new JButton("Start");
-	private JButton exit = new JButton("Exit");
+	private final GameController controller;
+	private final JFrame cur;
+	private final JRadioButton create = new JRadioButton("Create Hero", true);
+	private final JRadioButton load = new JRadioButton("Load Hero", false);
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private final JLabel classLabel = new JLabel("Class:");
+	private final DefaultComboBoxModel<String> heroClassModel = new DefaultComboBoxModel<>();
+	private final JComboBox<String> heroClass = new JComboBox<>();
+	private final JLabel nameLabel = new JLabel("Name:");
+	private final DefaultComboBoxModel<String> heroNameModel = new DefaultComboBoxModel<>();
+	private final JComboBox<String> heroName = new JComboBox<>();
+	private final JLabel stats = new JLabel("Stats");
+	private final JLabel levelLbl = new JLabel("Level:");
+	private final JLabel expLbl = new JLabel("Experience:");
+	private final JLabel attackLbl = new JLabel("Attack:");
+	private final JLabel defenceLbl = new JLabel("Defence:");
+	private final JLabel hpLbl = new JLabel("Hit points:");
+	private final JLabel level = new JLabel();
+	private final JLabel exp = new JLabel();
+	private final JLabel attack = new JLabel();
+	private final JLabel defence = new JLabel();
+	private final JLabel hp = new JLabel();
+	private final JButton start = new JButton("Start");
+	private final JButton exit = new JButton("Exit");
 
 	public HeroPickGuiView(GameController controller) {
 		this.controller = controller;
@@ -41,9 +43,9 @@ public class HeroPickGuiView extends JFrame {
 
 	private void initGUI() {
 		setTitle("Main menu");
-		int size = 320;
+		int size = 350;
 		setSize(size, size);
-		setPreferredSize(new Dimension(size, size - 100));
+		setPreferredSize(new Dimension(size, size - 140));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -55,18 +57,27 @@ public class HeroPickGuiView extends JFrame {
 
 		buttonGroup.add(create);
 		buttonGroup.add(load);
-		downloadClasses();
+		for (String hero : HeroBuilder.getInstance().getHeroes()) {
+			heroClassModel.addElement(hero);
+		}
+		heroClass.setModel(heroClassModel);
+		heroClass.setSelectedItem(null);
+		for (String name : DataBase.getInstance().getHeroNames()) {
+			heroNameModel.addElement(name);
+		}
 		heroName.setEditable(true);
-		heroName.setPreferredSize(new Dimension(size / 3 ,0));
+		heroName.setPreferredSize(new Dimension(size / 3, 0));
 
 		create.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				clearStats();
+				heroClass.setModel(heroClassModel);
 				heroClass.setEnabled(true);
 				heroClass.setSelectedItem(null);
+				heroName.setModel(new DefaultComboBoxModel<String>());
 				heroName.setEditable(true);
 				heroName.setSelectedItem(null);
-				heroName.removeAllItems();
 			}
 		});
 
@@ -74,11 +85,9 @@ public class HeroPickGuiView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				clearStats();
-				for (String name : DataBase.getInstance().getHeroNames()) {
-					heroName.addItem(name);
-				}
 				heroClass.setEnabled(false);
 				heroClass.setSelectedItem(null);
+				heroName.setModel(heroNameModel);
 				heroName.setEditable(false);
 				heroName.setSelectedItem(null);
 			}
@@ -104,8 +113,23 @@ public class HeroPickGuiView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (load.isSelected()) {
-					if (heroClass.getSelectedItem() != null) {
-
+					if (heroName.getSelectedItem() != null) {
+						Map<String, String> stats = DataBase.getInstance().getHeroStats((String) heroName.getSelectedItem());
+						level.setText(stats.get("level"));
+						exp.setText(stats.get("experience"));
+						attack.setText(stats.get("minAttack") + " - " + stats.get("maxAttack"));
+						defence.setText(stats.get("defence"));
+						hp.setText(stats.get("hp"));
+						heroClass.setSelectedItem(stats.get("class"));
+						if (!stats.get("weapon").equals("null")) {
+							attack.setText(attack.getText() + " + " + stats.get("weaponStat"));
+						}
+						if (!stats.get("armor").equals("null")) {
+							defence.setText(defence.getText() + " + " + stats.get("armorStat"));
+						}
+						if (!stats.get("helm").equals("null")) {
+							hp.setText(hp.getText() + " + " + stats.get("helmStat"));
+						}
 					}
 				}
 			}
@@ -115,16 +139,24 @@ public class HeroPickGuiView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (create.isSelected()) {
+					if (DataBase.getInstance().getHeroNames().contains((String) heroName.getSelectedItem())) {
+						new ErrorView("This Name is already taken", cur);
+					} else {
+						try {
+							controller.startGame(HeroBuilder.getInstance().createHero(
+									(String) heroClass.getSelectedItem(),
+									(String) heroName.getSelectedItem()));
+						} catch (IllegalArgumentException exception) {
+							new ErrorView(exception.getMessage(), cur);
+						}
+					}
+				} else if (load.isSelected()) {
 					try {
-						controller.startGame(HeroBuilder.getInstance().createHero(
-								(String) heroClass.getSelectedItem(),
+						controller.startGame(HeroBuilder.getInstance().loadHero(
 								(String) heroName.getSelectedItem()));
 					} catch (IllegalArgumentException exception) {
 						new ErrorView(exception.getMessage(), cur);
 					}
-				} else if (load.isSelected()) {
-//					controller.startGame(HeroBuilder.getInstance().loadHero(
-//							String.valueOf(heroNameCb.getSelectedItem())));
 				}
 			}
 		});
@@ -132,21 +164,12 @@ public class HeroPickGuiView extends JFrame {
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.saveHeroes();
 				dispose();
 			}
 		});
 
 		pack();
 		setVisible(true);
-	}
-
-	private void downloadClasses() {
-		heroClass.removeAllItems();
-		for (String hero : HeroBuilder.getInstance().getHeroes()) {
-			heroClass.addItem(hero);
-		}
-		heroClass.setSelectedItem(null);
 	}
 
 	private void clearStats() {
@@ -183,20 +206,20 @@ public class HeroPickGuiView extends JFrame {
 						.addGroup(gl.createParallelGroup()
 								.addComponent(stats)
 								.addGroup(gl.createSequentialGroup()
-									.addGroup(gl.createParallelGroup()
-											.addComponent(levelLbl)
-											.addComponent(expLbl)
-											.addComponent(attackLbl)
-											.addComponent(defenceLbl)
-											.addComponent(hpLbl)
-									)
-									.addGroup(gl.createParallelGroup(GroupLayout.Alignment.TRAILING)
-											.addComponent(level)
-											.addComponent(exp)
-											.addComponent(attack)
-											.addComponent(defence)
-											.addComponent(hp)
-									)
+										.addGroup(gl.createParallelGroup()
+												.addComponent(levelLbl)
+												.addComponent(expLbl)
+												.addComponent(attackLbl)
+												.addComponent(defenceLbl)
+												.addComponent(hpLbl)
+										)
+										.addGroup(gl.createParallelGroup(GroupLayout.Alignment.TRAILING)
+												.addComponent(level)
+												.addComponent(exp)
+												.addComponent(attack)
+												.addComponent(defence)
+												.addComponent(hp)
+										)
 								)
 						)
 				)

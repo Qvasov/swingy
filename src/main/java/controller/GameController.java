@@ -2,6 +2,7 @@ package controller;
 
 import lombok.Getter;
 import lombok.NonNull;
+import model.DataBase;
 import model.GameModel;
 import model.characters.heroes.Hero;
 import view.GameView;
@@ -68,8 +69,8 @@ public class GameController implements KeyListener {
 		view.updateView();
 	}
 
-	public void saveHeroes() {
-		//TODO сделать сохранение
+	public void saveHero() {
+		DataBase.getInstance().saveHero(model.getHero());
 	}
 
 	@Override

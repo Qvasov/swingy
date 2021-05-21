@@ -1,6 +1,7 @@
 package view.console;
 
 import controller.GameController;
+import model.DataBase;
 import model.characters.heroes.HeroBuilder;
 import view.View;
 
@@ -44,9 +45,31 @@ public class ConsoleUI implements View {
 						heroPickConsoleView.mainMenu();
 					}
 					break;
+				case LOAD:
+					if (input.equals("1")) {
+						heroPickConsoleView.chooseHero();
+					} else if (input.equals("2")) {
+						try {
+							controller.startGame(HeroBuilder.getInstance().loadHero(
+									heroPickConsoleView.getHeroName()));
+						} catch (IllegalArgumentException exception) {
+							error(exception.getMessage());
+						}
+					} else if (input.equals("3")) {
+						heroPickConsoleView.mainMenu();
+					}
+					break;
 				case NAME:
-					heroPickConsoleView.setHeroName(input);
-					heroPickConsoleView.create();
+					if (input.equals("!back")) {
+						heroPickConsoleView.create();
+					} else {
+						if (DataBase.getInstance().getHeroNames().contains(input)) {
+							error("This Name is already taken");
+						} else {
+							heroPickConsoleView.setHeroName(input);
+							heroPickConsoleView.create();
+						}
+					}
 					break;
 				case CLASS:
 					if (input.equals("1")) {
@@ -55,6 +78,18 @@ public class ConsoleUI implements View {
 						heroPickConsoleView.setHeroClass("Ranger");
 					}
 					heroPickConsoleView.create();
+					break;
+				case HERO:
+					if (input.equals("!back")) {
+						heroPickConsoleView.load();
+					} else {
+						if (DataBase.getInstance().getHeroNames().contains(input)) {
+							heroPickConsoleView.setHeroName(input);
+							heroPickConsoleView.load();
+						} else {
+							error("Unknown hero name");
+						}
+					}
 					break;
 			}
 		}
@@ -75,6 +110,9 @@ public class ConsoleUI implements View {
 						controller.getModel().moveLeft();
 					} else if (input.equalsIgnoreCase("E") || input.equalsIgnoreCase("R")) {
 						controller.getModel().moveRight();
+					} else if (input.equals("!exit")) {
+						controller.saveHero();
+						controller.launchGame();
 					}
 					updateView();
 					break;
@@ -108,10 +146,12 @@ public class ConsoleUI implements View {
 				}
 				case NEXT: {
 					if (input.equals("1")) {
+						controller.saveHero();
 						controller.startGame(controller.getModel().getHero());
 					} else if (input.equals("2")) {
 						controller.ok();
 					} else if (input.equals("3")) {
+						controller.saveHero();
 						controller.launchGame();
 					}
 					updateView();

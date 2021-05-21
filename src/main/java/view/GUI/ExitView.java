@@ -33,7 +33,7 @@ public class ExitView extends JDialog {
 		yes.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.saveHeroes();
+				controller.saveHero();
 				parent.dispose();
 				dispose();
 				controller.launchGame();

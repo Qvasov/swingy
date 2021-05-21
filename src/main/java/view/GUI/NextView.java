@@ -12,7 +12,7 @@ public class NextView extends JDialog {
 	private JFrame parent;
 	private JButton next = new JButton("Next Level");
 	private JButton cancel = new JButton("Cancel");
-	private JButton exit = new JButton("Exit");
+	private JButton exit = new JButton("Save & Exit");
 	private JLabel message = new JLabel("Do you want leave this level?");
 
 	public NextView(GameController controller, JFrame parent) {
@@ -31,6 +31,7 @@ public class NextView extends JDialog {
 		next.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				controller.saveHero();
 				parent.dispose();
 				dispose();
 				controller.startGame(controller.getModel().getHero());
@@ -47,6 +48,7 @@ public class NextView extends JDialog {
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				controller.saveHero();
 				parent.dispose();
 				dispose();
 				controller.launchGame();

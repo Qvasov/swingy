@@ -3,7 +3,7 @@ package model;
 import lombok.Getter;
 import model.characters.enemies.Enemy;
 import model.characters.heroes.Hero;
-import model.items.ItemFactory;
+import model.items.ItemBuilder;
 import model.items.abstarct.Item;
 
 import java.util.Random;
@@ -85,7 +85,7 @@ public class GameModel {
 				battleLog += String.format("%s has won the fight!\n", this.hero.getName());
 				hero.receiveExp(enemy.getExp());
 				hero.recoveryHp(hero.getFullHp());
-				item = ItemFactory.getInstance().generateItem(enemy);
+				item = ItemBuilder.getInstance().generateItem(enemy);
 				enemy = null;
 				return;
 			}

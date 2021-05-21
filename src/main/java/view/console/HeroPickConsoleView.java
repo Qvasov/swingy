@@ -2,6 +2,7 @@ package view.console;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.DataBase;
 import model.characters.heroes.HeroBuilder;
 
 import java.util.Map;
@@ -27,6 +28,8 @@ public class HeroPickConsoleView {
 		System.out.println("1. Create Hero\n" +
 				"2. Load Hero\n" +
 				"3. Exit");
+		heroName = null;
+		heroClass = null;
 		state = MAIN;
 	}
 
@@ -60,6 +63,35 @@ public class HeroPickConsoleView {
 	}
 
 	protected void load() {
+		System.out.println("---------------------\n" +
+				"|     Load Hero     |\n" +
+				"---------------------");
+		if (heroName == null) {
+			System.out.print("Name:\tYou need to choose Hero\n");
+		} else {
+			System.out.printf("Name:\t%s\n", heroName);
+			Map<String, String> stats = DataBase.getInstance().getHeroStats(heroName);
+			System.out.printf("Stats:\tClass: %s\n", stats.get("class"));
+			StringBuilder result = new StringBuilder();
+			result.append("\t\tLevel: ").append(stats.get("level")).append("\n")
+					.append("\t\tExperience: ").append(stats.get("experience")).append("\n")
+					.append("\t\tAttack: ").append(stats.get("minAttack")).append(" - ").append(stats.get("maxAttack")).append("\n");
+			if (!stats.get("weapon").equals("null")) {
+				result.deleteCharAt(result.length() - 1).append(" + ").append(stats.get("weaponStat")).append("\n");
+			}
+			result.append("\t\tDefence: ").append(stats.get("defence")).append("\n");
+			if (!stats.get("armor").equals("null")) {
+				result.deleteCharAt(result.length() - 1).append(" + ").append(stats.get("armorStat")).append("\n");
+			}
+			result.append("\t\tHit points: ").append(stats.get("hp")).append("\n");
+			if (!stats.get("helm").equals("null")) {
+				result.deleteCharAt(result.length() - 1).append(" + ").append(stats.get("helmStat")).append("\n");
+			}
+			System.out.print(result);
+		}
+		System.out.println("1. Choose Hero\n" +
+				"2. Start\n" +
+				"3. Back");
 		state = LOAD;
 	}
 
@@ -68,7 +100,7 @@ public class HeroPickConsoleView {
 				"|    Create Hero    |\n" +
 				"---------------------\n" +
 				"Name must be not null and its length must be from 1 to 20 symbols\n" +
-				"Enter Name...");
+				"Enter Name... (Type !back to return prev menu)");
 		state = NAME;
 	}
 
@@ -83,5 +115,16 @@ public class HeroPickConsoleView {
 			i++;
 		}
 		state = CLASS;
+	}
+
+	protected void chooseHero() {
+		System.out.println("---------------------\n" +
+				"|     Load Hero     |\n" +
+				"---------------------\n" +
+				"Enter Name... (Type !back to return prev menu)");
+		for (String name : DataBase.getInstance().getHeroNames()) {
+			System.out.println(name);
+		}
+		state = HERO;
 	}
 }

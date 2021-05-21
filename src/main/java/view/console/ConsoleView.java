@@ -33,9 +33,10 @@ public class ConsoleView {
 				.append("s, d: to south\n")
 				.append("w, l: to west\n")
 				.append("e, r: to east\n")
+				.append("!exit: save and exit game\n")
 				.append("--------------------\n");
 
-		int overview = 1;
+		int overview = 5;
 		int viewport = overview * 2 + 1;
 		int startX = 0;
 		int startY = 0;
@@ -158,6 +159,6 @@ public class ConsoleView {
 				"Do you want leave this level?\n" +
 				"1. Next level\n" +
 				"2. Cancel\n" +
-				"3. Exit\n");
+				"3. Save & Exit\n");
 	}
 }
