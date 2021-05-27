@@ -2,11 +2,14 @@ package view.GUI;
 
 import controller.GameController;
 import model.DataBase;
-import model.characters.heroes.*;
+import model.characters.heroes.HeroBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Map;
 
 public class HeroPickGuiView extends JFrame {
@@ -33,6 +36,7 @@ public class HeroPickGuiView extends JFrame {
 	private final JLabel defence = new JLabel();
 	private final JLabel hp = new JLabel();
 	private final JButton start = new JButton("Start");
+	private final JButton delete = new JButton("Delete Hero");
 	private final JButton exit = new JButton("Exit");
 
 	public HeroPickGuiView(GameController controller) {
@@ -51,7 +55,7 @@ public class HeroPickGuiView extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		Container container = getContentPane();
-		final GroupLayout gl = new GroupLayout(container);
+		GroupLayout gl = new GroupLayout(container);
 		container.setLayout(gl);
 		initLayout(gl);
 
@@ -78,6 +82,7 @@ public class HeroPickGuiView extends JFrame {
 				heroName.setModel(new DefaultComboBoxModel<String>());
 				heroName.setEditable(true);
 				heroName.setSelectedItem(null);
+				delete.setEnabled(false);
 			}
 		});
 
@@ -130,6 +135,7 @@ public class HeroPickGuiView extends JFrame {
 						if (!stats.get("helm").equals("null")) {
 							hp.setText(hp.getText() + " + " + stats.get("helmStat"));
 						}
+						delete.setEnabled(true);
 					}
 				}
 			}
@@ -157,6 +163,21 @@ public class HeroPickGuiView extends JFrame {
 					} catch (IllegalArgumentException exception) {
 						new ErrorView(exception.getMessage(), cur);
 					}
+				}
+			}
+		});
+
+		delete.setEnabled(false);
+		delete.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (load.isSelected() && heroName.getSelectedItem() != null) {
+					DataBase.getInstance().deleteHero((String) heroName.getSelectedItem());
+					clearStats();
+					heroClass.setSelectedItem(null);
+					heroNameModel.removeElement(heroName.getSelectedItem());
+					heroName.setSelectedItem(null);
+					delete.setEnabled(false);
 				}
 			}
 		});
@@ -198,7 +219,10 @@ public class HeroPickGuiView extends JFrame {
 										.addComponent(heroClass)
 								)
 						)
-						.addComponent(start)
+						.addGroup(gl.createSequentialGroup()
+								.addComponent(start)
+								.addComponent(delete)
+						)
 						.addComponent(exit)
 				)
 				.addGroup(gl.createParallelGroup()
@@ -239,7 +263,10 @@ public class HeroPickGuiView extends JFrame {
 										.addComponent(nameLabel)
 										.addComponent(heroName)
 								)
-								.addComponent(start)
+								.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(start)
+										.addComponent(delete)
+								)
 								.addComponent(exit)
 						)
 						.addGroup(gl.createSequentialGroup()

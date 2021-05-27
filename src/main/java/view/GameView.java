@@ -9,6 +9,7 @@ import view.console.ConsoleUI;
 public class GameView {
 	public static final int CONSOLE = 0;
 	public static final int GUI = 1;
+	@Setter
 	private int mode;
 	@Setter
 	private GameController controller;

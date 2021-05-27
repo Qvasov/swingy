@@ -5,6 +5,7 @@ import lombok.Setter;
 import model.DataBase;
 import model.characters.heroes.HeroBuilder;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static view.console.MenuState.*;
@@ -90,8 +91,13 @@ public class HeroPickConsoleView {
 			System.out.print(result);
 		}
 		System.out.println("1. Choose Hero\n" +
-				"2. Start\n" +
-				"3. Back");
+				"2. Start");
+		if (heroName != null) {
+			System.out.println("3. Delete\n" +
+					"4. Back");
+		} else {
+			System.out.println("3. Back");
+		}
 		state = LOAD;
 	}
 
@@ -122,8 +128,13 @@ public class HeroPickConsoleView {
 				"|     Load Hero     |\n" +
 				"---------------------\n" +
 				"Enter Name... (Type !back to return prev menu)");
-		for (String name : DataBase.getInstance().getHeroNames()) {
-			System.out.println(name);
+		ArrayList<String> names = DataBase.getInstance().getHeroNames();
+		if (names.size() == 0) {
+			System.out.println("No heroes");
+		} else {
+			for (String name : names) {
+				System.out.println(name);
+			}
 		}
 		state = HERO;
 	}

@@ -56,7 +56,18 @@ public class ConsoleUI implements View {
 							error(exception.getMessage());
 						}
 					} else if (input.equals("3")) {
-						heroPickConsoleView.mainMenu();
+						if (heroPickConsoleView.getHeroName() != null) {
+							DataBase.getInstance().deleteHero(heroPickConsoleView.getHeroName());
+							System.out.printf("Hero \"%s\" has been deleted\n", heroPickConsoleView.getHeroName());
+							heroPickConsoleView.setHeroName(null);
+							heroPickConsoleView.load();
+						} else {
+							heroPickConsoleView.mainMenu();
+						}
+					} else if (input.equals("4")) {
+						if (heroPickConsoleView.getHeroName() != null) {
+							heroPickConsoleView.mainMenu();
+						}
 					}
 					break;
 				case NAME:
