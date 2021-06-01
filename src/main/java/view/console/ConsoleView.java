@@ -13,6 +13,26 @@ public class ConsoleView {
 	}
 
 	public void updateView() {
+		switch (controller.getModel().getState()) {
+			case MOVEMENT:
+				map();
+				break;
+			case ATTACK:
+				attack();
+				break;
+			case FIGHT_LOG:
+				fightResult();
+				break;
+			case NEXT:
+				gameOver();
+				break;
+			case EXIT:
+				exitMenu();
+				break;
+		}
+	}
+
+	private void map() {
 		Map map = controller.getModel().getMap();
 		Hero hero = controller.getModel().getHero();
 		StringBuilder result = new StringBuilder();
@@ -107,21 +127,9 @@ public class ConsoleView {
 		}
 
 		System.out.print(result);
-
-		switch (controller.getModel().getState()) {
-			case ATTACK:
-				attack();
-				break;
-			case FIGHT_LOG:
-				fightResult();
-				break;
-			case NEXT:
-				gameOver();
-				break;
-		}
 	}
 
-	protected void attack() {
+	private void attack() {
 		System.out.print("--------------------\n" +
 				"|      BATTLE      |\n" +
 				"--------------------\n" +
@@ -134,7 +142,7 @@ public class ConsoleView {
 				"2. Run (50% chance to avoid the fight)\n");
 	}
 
-	protected void fightResult() {
+	private void fightResult() {
 		StringBuilder result = new StringBuilder();
 		result.append("--------------------\n")
 				.append("|      BATTLE      |\n")
@@ -152,7 +160,7 @@ public class ConsoleView {
 		System.out.print(result);
 	}
 
-	protected void gameOver() {
+	private void gameOver() {
 		System.out.print("----------------------\n" +
 				"|   LEVEL COMPLETE   |\n" +
 				"----------------------\n" +
@@ -160,5 +168,15 @@ public class ConsoleView {
 				"1. Next level\n" +
 				"2. Cancel\n" +
 				"3. Save & Exit\n");
+	}
+
+	private void exitMenu() {
+		System.out.print("----------------------\n" +
+				"|        EXIT        |\n" +
+				"----------------------\n" +
+				"Save before leaving?\n" +
+				"1. Yes\n" +
+				"2. No\n" +
+				"3. Cancel\n");
 	}
 }

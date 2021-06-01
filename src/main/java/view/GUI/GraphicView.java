@@ -8,6 +8,7 @@ import model.characters.heroes.Hero;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -26,7 +27,7 @@ public class GraphicView extends JFrame {
 	private JLabel defence;
 	private JLabel hp;
 
-	public GraphicView(GameController controller) {
+	public GraphicView(final GameController controller) {
 		this.controller = controller;
 		this.cur = this;
 		this.mapSize = controller.getModel().getMap().getSize();
@@ -37,19 +38,28 @@ public class GraphicView extends JFrame {
 			}
 		}
 
+		Action switchMode = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				controller.switchMode();
+			}
+		};
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F4"), "switch");
+		getRootPane().getActionMap().put("switch", switchMode);
+
 		initHeroInfo();
 		initScrollContent();
 		initUI();
 		downloadTextures();
-		updateView();
 		pack();
+		setVisible(true);
+		updateView();
 
 		JScrollBar bar = scrollPane.getVerticalScrollBar();
 		scrollPane.getVerticalScrollBar().setValue(bar.getMaximum() / 2 - bar.getVisibleAmount() / 2);
 		bar = scrollPane.getHorizontalScrollBar();
 		scrollPane.getHorizontalScrollBar().setValue(bar.getMaximum() / 2 - bar.getVisibleAmount() / 2);
-
-		setVisible(true);
 	}
 
 	public void updateView() {
@@ -98,6 +108,9 @@ public class GraphicView extends JFrame {
 			case NEXT:
 				new NextView(controller, this);
 				break;
+			case EXIT:
+				new ExitView(controller, this);
+				break;
 		}
 	}
 
@@ -142,7 +155,7 @@ public class GraphicView extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					new ExitView(cur, controller);
+					new ExitView(controller, cur);
 				}
 			}
 		});

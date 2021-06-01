@@ -14,7 +14,7 @@ public class ExitView extends JDialog {
 	private JButton no = new JButton("Don't save");
 	private JButton cancel = new JButton("Cancel");
 
-	public ExitView(JFrame parent, GameController controller) {
+	public ExitView(GameController controller, JFrame parent) {
 		this.controller = controller;
 		this.parent = parent;
 
@@ -25,6 +25,19 @@ public class ExitView extends JDialog {
 	public void initUI() {
 		setTitle("Exit to main menu");
 		setResizable(false);
+
+		Action switchMode = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.dispose();
+				dispose();
+				controller.getModel().exit();
+				controller.switchMode();
+			}
+		};
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F4"), "switch");
+		getRootPane().getActionMap().put("switch", switchMode);
+
 		initLayout();
 		pack();
 		setLocationRelativeTo(parent);

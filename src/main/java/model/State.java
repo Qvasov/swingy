@@ -5,5 +5,6 @@ public enum State {
 	MOVEMENT,
 	ATTACK,
 	FIGHT_LOG,
-	NEXT
+	NEXT,
+	EXIT
 }

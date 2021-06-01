@@ -26,7 +26,12 @@ public class GameController implements KeyListener {
 		view.setController(this);
 	}
 
+	public void switchMode() {
+		view.switchMode();
+	}
+
 	public void launchGame() {
+		model.pick();
 		view.heroPick();
 	}
 
@@ -48,12 +53,12 @@ public class GameController implements KeyListener {
 
 	public void fight() {
 		model.fight();
-		view.updateView();
+		view.gameUpdate();
 	}
 
 	public void run() {
 		if (model.run()) {
-			view.updateView();
+			view.gameUpdate();
 		} else {
 			fight();
 		}
@@ -61,12 +66,12 @@ public class GameController implements KeyListener {
 
 	public void equipItem() {
 		model.equipItem();
-		view.updateView();
+		view.gameUpdate();
 	}
 
 	public void ok() {
 		model.ok();
-		view.updateView();
+		view.gameUpdate();
 	}
 
 	public void saveHero() {
@@ -99,7 +104,7 @@ public class GameController implements KeyListener {
 				model.moveLeft();
 				break;
 		}
-		view.updateView();
+		view.gameUpdate();
 	}
 
 	public static void main(String[] args) {

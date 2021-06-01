@@ -22,8 +22,12 @@ public class GraphicUI implements View {
 	}
 
 	@Override
-	public void updateView() {
-		graphicView.updateView();
+	public void updateView(GameController controller) {
+		if (graphicView != null) {
+			graphicView.updateView();
+		} else {
+			newGameMap(controller);
+		}
 	}
 
 	@Override

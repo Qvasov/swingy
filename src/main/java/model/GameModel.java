@@ -103,7 +103,7 @@ public class GameModel {
 		int attackerHp = attacker.getCurHp();
 		int damage = defender.receiveDamage(attacker.dealDamage());
 		battleLog += String.format("%s(%d hp) deals %d damage to %s(%d hp)\n",
-				attacker.getName(), attackerHp, damage, defender.getName() ,defenderHp);
+				attacker.getName(), attackerHp, damage, defender.getName(), defenderHp);
 	}
 
 	public void equipItem() {
@@ -114,5 +114,13 @@ public class GameModel {
 
 	public void ok() {
 		state = State.MOVEMENT;
+	}
+
+	public void pick() {
+		state = State.PICK_HERO;
+	}
+
+	public void exit() {
+		state = State.EXIT;
 	}
 }

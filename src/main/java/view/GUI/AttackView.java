@@ -52,6 +52,17 @@ public class AttackView extends JDialog {
 			}
 		});
 
+		Action switchMode = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.dispose();
+				dispose();
+				controller.switchMode();
+			}
+		};
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F4"), "switch");
+		getRootPane().getActionMap().put("switch", switchMode);
+
 		initLayout();
 		pack();
 		setLocationRelativeTo(parent);

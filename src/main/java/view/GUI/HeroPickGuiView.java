@@ -8,8 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Map;
 
 public class HeroPickGuiView extends JFrame {
@@ -39,7 +37,7 @@ public class HeroPickGuiView extends JFrame {
 	private final JButton delete = new JButton("Delete Hero");
 	private final JButton exit = new JButton("Exit");
 
-	public HeroPickGuiView(GameController controller) {
+	public HeroPickGuiView(final GameController controller) {
 		this.controller = controller;
 		this.cur = this;
 		initGUI();
@@ -58,6 +56,16 @@ public class HeroPickGuiView extends JFrame {
 		GroupLayout gl = new GroupLayout(container);
 		container.setLayout(gl);
 		initLayout(gl);
+
+		Action switchMode = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				controller.switchMode();
+			}
+		};
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F4"), "switch");
+		getRootPane().getActionMap().put("switch", switchMode);
 
 		buttonGroup.add(create);
 		buttonGroup.add(load);

@@ -2,6 +2,7 @@ package view.console;
 
 import controller.GameController;
 import model.DataBase;
+import model.State;
 import model.characters.heroes.HeroBuilder;
 import view.View;
 
@@ -17,6 +18,12 @@ public class ConsoleUI implements View {
 		HeroPickConsoleView heroPickConsoleView = new HeroPickConsoleView();
 		while (scanner.hasNext()) {
 			input = scanner.next();
+
+			if (input.equalsIgnoreCase("F4")) {
+				controller.switchMode();
+				return;
+			}
+
 			switch (heroPickConsoleView.getState()) {
 				case MAIN:
 					if (input.equals("1")) {
@@ -38,6 +45,11 @@ public class ConsoleUI implements View {
 						try {
 							controller.startGame(HeroBuilder.getInstance().createHero(
 									heroPickConsoleView.getHeroClass(), heroPickConsoleView.getHeroName()));
+							if (controller.getModel().getState() == State.PICK_HERO) {
+								heroPickConsoleView.mainMenu();
+							} else {
+								return;
+							}
 						} catch (IllegalArgumentException exception) {
 							error(exception.getMessage());
 						}
@@ -52,6 +64,11 @@ public class ConsoleUI implements View {
 						try {
 							controller.startGame(HeroBuilder.getInstance().loadHero(
 									heroPickConsoleView.getHeroName()));
+							if (controller.getModel().getState() == State.PICK_HERO) {
+								heroPickConsoleView.mainMenu();
+							} else {
+								return;
+							}
 						} catch (IllegalArgumentException exception) {
 							error(exception.getMessage());
 						}
@@ -111,6 +128,12 @@ public class ConsoleUI implements View {
 		this.consoleView = new ConsoleView(controller);
 		while (scanner.hasNext()) {
 			input = scanner.next();
+
+			if (input.equalsIgnoreCase("F4")) {
+				controller.switchMode();
+				return;
+			}
+
 			switch (controller.getModel().getState()) {
 				case MOVEMENT:
 					if (input.equalsIgnoreCase("N") || input.equalsIgnoreCase("U")) {
@@ -122,10 +145,9 @@ public class ConsoleUI implements View {
 					} else if (input.equalsIgnoreCase("E") || input.equalsIgnoreCase("R")) {
 						controller.getModel().moveRight();
 					} else if (input.equals("!exit")) {
-						controller.saveHero();
-						controller.launchGame();
+						controller.getModel().exit();
 					}
-					updateView();
+					updateView(controller);
 					break;
 				case ATTACK: {
 					if (input.equals("1")) {
@@ -133,7 +155,7 @@ public class ConsoleUI implements View {
 					} else if (input.equals("2")) {
 						controller.run();
 					}
-					updateView();
+					updateView(controller);
 					break;
 				}
 				case FIGHT_LOG: {
@@ -152,29 +174,50 @@ public class ConsoleUI implements View {
 							controller.ok();
 						}
 					}
-					updateView();
+					updateView(controller);
 					break;
 				}
 				case NEXT: {
 					if (input.equals("1")) {
 						controller.saveHero();
-						controller.startGame(controller.getModel().getHero());
+						updateView(controller);
 					} else if (input.equals("2")) {
 						controller.ok();
 					} else if (input.equals("3")) {
 						controller.saveHero();
-						controller.launchGame();
+						consoleView = null;
+						controller.getModel().pick();
+						return;
 					}
-					updateView();
+					updateView(controller);
 					break;
+				}
+				case EXIT: {
+					if (input.equals("1")) {
+						controller.saveHero();
+						consoleView = null;
+						controller.getModel().pick();
+						return;
+					} else if (input.equals("2")) {
+						consoleView = null;
+						controller.getModel().pick();
+						return;
+					} else if (input.equals("3")) {
+						controller.getModel().ok();
+					}
+					updateView(controller);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void updateView() {
-		consoleView.updateView();
+	public void updateView(GameController controller) {
+		if (consoleView != null) {
+			consoleView.updateView();
+		} else {
+			newGameMap(controller);
+		}
 	}
 
 	@Override
