@@ -11,7 +11,7 @@ public abstract class Item {
 	private Icon icon;
 
 	protected Item() {
-		this.icon = IconStorage.downloadImage(this.getClass().getSimpleName());
+		this.icon = IconStorage.getInstance().downloadImage(this.getClass().getSimpleName());
 	}
 
 	public abstract void equip(Hero hero);

@@ -70,7 +70,7 @@ public class GraphicView extends JFrame {
 		mapIcons[hero.getPosition().getX()][hero.getPosition().getY()].setIcon(hero.getIcon());
 		if (map.getUnits()[hero.getPosition().getPrevX()] == null ||
 				map.getUnits()[hero.getPosition().getPrevX()].get(hero.getPosition().getPrevY()) == null) {
-			icon = IconStorage.downloadImage(Empty.class.getSimpleName());
+			icon = IconStorage.getInstance().downloadImage(Empty.class.getSimpleName());
 		} else {
 			icon = map.getUnits()[hero.getPosition().getPrevX()].get(hero.getPosition().getPrevY()).getIcon();
 		}
@@ -269,7 +269,7 @@ public class GraphicView extends JFrame {
 		for (int x = 0; x < map.getSize(); x++) {
 			for (int y = 0; y < map.getSize(); y++) {
 				if (map.getUnits()[x] == null || map.getUnits()[x].get(y) == null) {
-					icon = IconStorage.downloadImage(Empty.class.getSimpleName());
+					icon = IconStorage.getInstance().downloadImage(Empty.class.getSimpleName());
 				} else {
 					icon = map.getUnits()[x].get(y).getIcon();
 				}

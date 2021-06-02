@@ -35,7 +35,7 @@ public abstract class Unit {
 		this.defence = defence;
 		this.hp = hp;
 		this.curHp = this.hp;
-		this.icon = IconStorage.downloadImage(this.getClass().getSimpleName());
+		this.icon = IconStorage.getInstance().downloadImage(this.getClass().getSimpleName());
 	}
 
 	public int dealDamage() {

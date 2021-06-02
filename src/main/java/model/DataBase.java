@@ -13,7 +13,7 @@ import java.util.Map;
 public class DataBase {
 	private static DataBase dataBase = new DataBase();
 	private Connection connection;
-	private static final String URL = "jdbc:hsqldb:file:src/main/resources/data/swingyDB;shutdown=true";
+	private static final String URL = "jdbc:hsqldb:file:Heroes/swingyDB;shutdown=true";
 	private static final String USER = "SA";
 	private static final String PASSWORD = "";
 
