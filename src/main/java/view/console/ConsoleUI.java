@@ -180,6 +180,7 @@ public class ConsoleUI implements View {
 				case NEXT: {
 					if (input.equals("1")) {
 						controller.saveHero();
+						controller.ok();
 						updateView(controller);
 					} else if (input.equals("2")) {
 						controller.ok();
