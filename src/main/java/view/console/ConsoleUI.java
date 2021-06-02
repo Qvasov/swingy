@@ -167,7 +167,8 @@ public class ConsoleUI implements View {
 						}
 					} else if (controller.getModel().getHero().isDead()) {
 						if (input.equals("1")) {
-							controller.launchGame();
+							controller.getModel().pick();
+							return;
 						}
 					} else {
 						if (input.equals("1")) {
@@ -181,7 +182,6 @@ public class ConsoleUI implements View {
 					if (input.equals("1")) {
 						controller.saveHero();
 						controller.ok();
-						updateView(controller);
 					} else if (input.equals("2")) {
 						controller.ok();
 					} else if (input.equals("3")) {
@@ -190,7 +190,6 @@ public class ConsoleUI implements View {
 						controller.getModel().pick();
 						return;
 					}
-					updateView(controller);
 					break;
 				}
 				case EXIT: {
@@ -204,9 +203,9 @@ public class ConsoleUI implements View {
 						controller.getModel().pick();
 						return;
 					} else if (input.equals("3")) {
-						controller.getModel().ok();
+						controller.ok();
 					}
-					updateView(controller);
+					break;
 				}
 			}
 		}
