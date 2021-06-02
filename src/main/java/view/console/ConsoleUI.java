@@ -181,6 +181,7 @@ public class ConsoleUI implements View {
 				case NEXT: {
 					if (input.equals("1")) {
 						controller.saveHero();
+						controller.getModel().downloadMap(controller.getModel().getHero());
 						controller.ok();
 					} else if (input.equals("2")) {
 						controller.ok();

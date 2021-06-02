@@ -112,7 +112,7 @@ public class GameModel {
 		state = State.MOVEMENT;
 	}
 
-	public void ok() {
+	public void move() {
 		state = State.MOVEMENT;
 	}
 

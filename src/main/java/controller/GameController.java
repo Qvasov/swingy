@@ -70,7 +70,7 @@ public class GameController implements KeyListener {
 	}
 
 	public void ok() {
-		model.ok();
+		model.move();
 		view.gameUpdate();
 	}
 
