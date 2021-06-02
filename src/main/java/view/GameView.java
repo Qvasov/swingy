@@ -62,8 +62,13 @@ public class GameView {
 			case ATTACK:
 			case FIGHT_LOG:
 			case NEXT:
+				view.updateView(controller);
+				break;
 			case EXIT:
 				view.updateView(controller);
+				if (controller.getModel().getState() == State.PICK_HERO) {
+					view.heroPick(controller);
+				}
 				break;
 		}
 	}
